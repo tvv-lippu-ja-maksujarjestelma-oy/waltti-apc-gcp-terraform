@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: workload-identity-test
+  namespace: argocd # Change ns for testing other WI
+spec:
+  containers:
+  - image: google/cloud-sdk:slim
+    name: workload-identity-test
+    command: ["sleep","infinity"]
+  serviceAccountName: argocd-gke # Change SA used in testing
+  nodeSelector:
+    iam.gke.io/gke-metadata-server-enabled: "true"

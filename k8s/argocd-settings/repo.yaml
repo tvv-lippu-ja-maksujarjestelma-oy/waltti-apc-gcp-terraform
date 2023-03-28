@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  project: d2FsdHRp
+  type: Z2l0
+  url: aHR0cHM6Ly9naXRodWIuY29tL3R2di1saXBwdS1qYS1tYWtzdWphcmplc3RlbG1hLW95L3dhbHR0aS1hcGMtZGVwbG95bWVudC5naXQ=
+kind: Secret
+metadata:
+  name: waltti-repo
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
