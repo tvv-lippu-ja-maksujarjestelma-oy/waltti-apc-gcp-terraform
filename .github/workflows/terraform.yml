@@ -37,6 +37,10 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init
+      env: 
+        TF_VAR_project_id: ${{ secrets.project_id }}
+        TF_VAR_environment: "sandbox"
+        TF_VAR_tf_service_account: ${{ secrets.tf_service_account }}
 
     - name: Terraform Validate
       id: validate
