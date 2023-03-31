@@ -24,6 +24,7 @@ jobs:
       with:
         workload_identity_provider: ${{ secrets.workload_id_pool }}
         service_account: ${{ secrets.tf_service_account }}
+        token_format: 'access_token'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v1'
@@ -32,7 +33,7 @@ jobs:
       name: 'gcloud'
       run: |-
         gcloud storage ls
-        
+
     - uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.4.0
