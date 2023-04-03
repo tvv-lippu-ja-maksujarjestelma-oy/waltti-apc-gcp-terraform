@@ -7,6 +7,7 @@ variable "region" {
 }
 
 variable "tf_service_account" {
+  sensitive = true
 }
 
 variable "environment" {

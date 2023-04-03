@@ -4,6 +4,7 @@ resource "google_storage_bucket" "cloudamqp-tf-state" {
   location                    = var.region
   storage_class               = "STANDARD"
   uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
   versioning {
     enabled = true
   }
@@ -14,6 +15,7 @@ resource "google_storage_bucket" "streamnative-tf-state" {
   location                    = var.region
   storage_class               = "STANDARD"
   uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
   versioning {
     enabled = true
   }
@@ -26,7 +28,7 @@ resource "google_service_account" "cloudamqp" {
 
 resource "google_service_account_iam_member" "cloudamqp" {
   service_account_id = google_service_account.cloudamqp.name
-  role               = "roles/editor" # Overkill
+  role               = "roles/editor" # TODO: This is overkill
   member             = "serviceAccount:${google_service_account.cloudamqp.email}"
 }
 
@@ -53,10 +55,3 @@ resource "google_storage_bucket_iam_member" "streamnative" {
   member = "serviceAccount:${google_service_account.streamnative.email}"
 }
 
-output "cloudamqp-tf-state-bucket" {
-  value = google_storage_bucket.cloudamqp-tf-state.name
-}
-
-output "streamnative-tf-state-bucket" {
-  value = google_storage_bucket.streamnative-tf-state.name
-}
