@@ -10,11 +10,4 @@ resource "google_storage_bucket" "gcp-tf-state" {
   }
 }
 
-# TODO: Terraform SA needs access to bucket
-# resource "google_storage_bucket_iam_member" "cloudamqp" {
-#   bucket = google_storage_bucket.gcp-tf-state.name
-#   role   = "roles/storage.admin"
-#   member = "serviceAccount:XXXX
-# }
-
 #  Normal buckets here!
