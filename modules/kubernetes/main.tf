@@ -15,7 +15,9 @@ resource "google_container_cluster" "primary" {
   location = var.region
 
   enable_autopilot = true
-  #min_master_version = data.google_container_engine_versions.gke.latest_master_version
+  # GKE autopilot are by default in regular channel
+  # See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels
+  #min_master_version = "REGULAR"
 
   network    = "network"
   subnetwork = "sandbox-gke"

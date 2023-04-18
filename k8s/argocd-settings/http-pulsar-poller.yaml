@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mqtt-pulsar-forwarder
+  name: http-pulsar-poller
   namespace: argocd
 spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
     targetRevision: argocd
-    path: manifests/mqtt-pulse-forwarder/overlays/dev
+    path: manifests/http-pulsar-poller/overlays/dev
   destination:
     server: https://kubernetes.default.svc
