@@ -5,6 +5,15 @@ variable "region" {
   default = "europe-west3"
 }
 
+variable "project_id" {
+  default = "Project_ID"
+}
+
+variable "secret_name_starts" {
+  type    = string
+  default = null
+}
+
 variable "service_name" {
   type = string
 }
