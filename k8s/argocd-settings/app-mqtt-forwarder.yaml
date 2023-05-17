@@ -10,7 +10,7 @@ spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/mqtt-pulse-forwarder/overlays/dev
+    path: manifests/mqtt-pulsar-forwarder/overlays/dev
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:  
