@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: mqtt-pulsar-forwarder
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/mqtt-pulsar-forwarder:edge
+    argocd-image-updater.argoproj.io/myalias: digest
 spec:
   project: waltti
   source:
