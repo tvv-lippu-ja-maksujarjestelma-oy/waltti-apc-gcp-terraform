@@ -9,6 +9,12 @@ resource "google_service_account" "gke" {
   display_name = "Service Account for GKE"
 }
 
+resource "google_project_iam_member" "gke_policy" {
+  project = var.project_id
+  role   = "roles/container.nodeServiceAccount"
+  member = "serviceAccount:${google_service_account.gke.email}"
+}
+
 resource "google_container_cluster" "primary" {
 
   name     = "prototype"
@@ -17,7 +23,7 @@ resource "google_container_cluster" "primary" {
   enable_autopilot = true
   # GKE autopilot are by default in regular channel
   # See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels
-  #min_master_version = "REGULAR"
+  min_master_version = "1.25.8-gke.500"
 
   network    = "network"
   subnetwork = "sandbox-gke"
@@ -69,13 +75,13 @@ resource "google_container_cluster" "primary" {
   #   }
   # }
 
-  # monitoring_config {
-  #   enable_components = ["SYSTEM_COMPONENTS"]
+  monitoring_config {
+    enable_components = ["SYSTEM_COMPONENTS"]
 
-  #   managed_prometheus {
-  #     enabled = true
-  #   }
-  # }
+    managed_prometheus {
+      enabled = true
+    }
+  }
 
   cluster_autoscaling {
     auto_provisioning_defaults {
