@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: mqtt-deduplicator
   namespace: argocd
+    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/pulsar-topic-deduplicator:edge
+    argocd-image-updater.argoproj.io/myalias: digest
 spec:
   project: waltti
   source:
