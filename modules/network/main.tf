@@ -7,7 +7,7 @@ resource "google_compute_network" "vpc" {
 }
 
 resource "google_compute_subnetwork" "gke" {
-  name          = "${var.environment}-gke"
+  name = "${var.environment}-gke"
   # TODO: CIDR ranges needs to be different in different envs?
   ip_cidr_range = "10.0.0.0/20" # 10.0.0.0 - 10.0.15.255, 4094
   region        = var.region

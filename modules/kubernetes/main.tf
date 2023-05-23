@@ -1,6 +1,6 @@
 locals {
-  cluster_name = google_container_cluster.primary.name
-  cluster_endpoint = google_container_cluster.primary.endpoint
+  cluster_name           = google_container_cluster.primary.name
+  cluster_endpoint       = google_container_cluster.primary.endpoint
   cluster_ca_certificate = google_container_cluster.primary.master_auth.0.cluster_ca_certificate
 }
 
@@ -11,8 +11,8 @@ resource "google_service_account" "gke" {
 
 resource "google_project_iam_member" "gke_policy" {
   project = var.project_id
-  role   = "roles/container.nodeServiceAccount"
-  member = "serviceAccount:${google_service_account.gke.email}"
+  role    = "roles/container.nodeServiceAccount"
+  member  = "serviceAccount:${google_service_account.gke.email}"
 }
 
 resource "google_container_cluster" "primary" {
@@ -40,11 +40,11 @@ resource "google_container_cluster" "primary" {
   master_authorized_networks_config {
 
     dynamic "cidr_blocks" {
-      for_each =  var.management_cidrs
+      for_each = var.management_cidrs
       content {
         cidr_block = cidr_blocks.value
       }
-      
+
     }
   }
 

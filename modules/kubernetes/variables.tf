@@ -14,5 +14,5 @@ variable "management_cidrs" {
 }
 
 variable "network_name" {
-  
+
 }
