@@ -3,7 +3,8 @@ kind: Application
 metadata:
   name: mqtt-deduplicator
   namespace: argocd
-    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/pulsar-topic-deduplicator:edge
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: myalias=tvvlmj/pulsar-topic-deduplicator:edge
     argocd-image-updater.argoproj.io/myalias: digest
 spec:
   project: waltti
@@ -12,3 +13,5 @@ spec:
     path: manifests/mqtt-deduplicator/overlays/dev
   destination:
     server: https://kubernetes.default.svc
+  syncPolicy:  
+    automated: {}
