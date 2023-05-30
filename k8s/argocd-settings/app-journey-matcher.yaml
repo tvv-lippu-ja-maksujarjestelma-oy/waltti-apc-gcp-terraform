@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: journey-matcher
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/waltti-apc-journey-matcher:edge
+    argocd-image-updater.argoproj.io/myalias: digest
 spec:
   project: waltti
   source:
@@ -10,3 +13,5 @@ spec:
     path: manifests/journey-matcher/overlays/dev
   destination:
     server: https://kubernetes.default.svc
+  syncPolicy:  
+    automated: {}
