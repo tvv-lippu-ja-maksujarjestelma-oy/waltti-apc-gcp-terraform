@@ -1,4 +1,4 @@
-# module "network" {
-#   source      = "../../modules/network"
-#   environment = var.environment
-# }
+module "network" {
+  source      = "../../modules/network"
+  environment = var.environment
+}
