@@ -30,6 +30,6 @@ variable "maintenance_recurrence" {
 
 variable "gcp_service_list" {
   type    = list(string)
-  default = ["cloudkms.googleapis.com"]
+  default = ["compute.googleapis.com","cloudkms.googleapis.com","container.googleapis.com"]
 
 }

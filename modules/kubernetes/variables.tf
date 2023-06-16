@@ -16,3 +16,9 @@ variable "management_cidrs" {
 variable "network_name" {
 
 }
+
+variable "cluster_name" {
+  type    = string
+  default = "prototype"
+  
+}
