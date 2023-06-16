@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pulsar-mqtt-forwarder
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/pulsar-mqtt-forwarder:edge
+    argocd-image-updater.argoproj.io/myalias: digest
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/pulsar-mqtt-forwarder/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:  
+    automated: {}
