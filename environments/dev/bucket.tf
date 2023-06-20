@@ -11,3 +11,12 @@ resource "google_storage_bucket" "gcp-tf-state" {
 }
 
 #  Normal buckets here!
+
+# Cloud Sink test here
+resource "google_storage_bucket" "pulsar_cloud_sink" {
+  name                        = "apc-pulsar-${var.environment}-sink"
+  location                    = var.region
+  storage_class               = "STANDARD"
+  uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
+}

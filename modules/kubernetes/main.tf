@@ -58,15 +58,15 @@ resource "google_container_cluster" "primary" {
     channel = "REGULAR"
   }
 
-  maintenance_policy {
-    # You must allow at least 48 hours of maintenance availability in a 32-day rolling window.
-    # Only contiguous availability windows of at least four hours are considered.
-    recurring_window {
-      start_time = var.maintenance_start_time
-      end_time   = var.maintenance_end_time
-      recurrence = var.maintenance_recurrence
-    }
-  }
+  # maintenance_policy {
+  #   # You must allow at least 48 hours of maintenance availability in a 32-day rolling window.
+  #   # Only contiguous availability windows of at least four hours are considered.
+  #   recurring_window {
+  #     start_time = var.maintenance_start_time
+  #     end_time   = var.maintenance_end_time
+  #     recurrence = var.maintenance_recurrence
+  #   }
+  # }
 
   # notification_config {
   #   pubsub {
