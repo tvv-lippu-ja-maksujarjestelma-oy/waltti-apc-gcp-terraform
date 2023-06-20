@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: journey-matcher
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/waltti-apc-journey-matcher:edge
+    argocd-image-updater.argoproj.io/myalias: digest
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: dev
+        url:  https://kubernetes.default.svc
+      - cluster: qa
+        url: https://34.159.35.141
+  template:
+    metadata:
+      name: 'journey-matcher-{{cluster}}'
+    spec:
+      project: waltti
+      source:
+        repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+        targetRevision: HEAD
+        path: manifests/journey-matcher/overlays/{{cluster}}
+      destination:
+        server: '{{url}}'

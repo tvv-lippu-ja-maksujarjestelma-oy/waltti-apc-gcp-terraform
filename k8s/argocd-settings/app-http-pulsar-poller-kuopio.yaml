@@ -10,3 +10,5 @@ spec:
     path: manifests/http-pulsar-poller/kuopio/overlays/dev
   destination:
     server: https://kubernetes.default.svc
+  syncPolicy:  
+    automated: {}

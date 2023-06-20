@@ -4,6 +4,8 @@ metadata:
   name: argocd-backend-config
   namespace: argocd
 spec:
+  securityPolicy:
+    name: "argocd-access"
   healthCheck:
     checkIntervalSec: 30
     timeoutSec: 5
