@@ -11,6 +11,9 @@ spec:
   - name: '*'
     namespace: '*'
     server: https://kubernetes.default.svc
+  - name: '*'
+    namespace: '*'
+    server: https://34.159.35.141
   namespaceResourceWhitelist:
   - group: '*'
     kind: '*'
