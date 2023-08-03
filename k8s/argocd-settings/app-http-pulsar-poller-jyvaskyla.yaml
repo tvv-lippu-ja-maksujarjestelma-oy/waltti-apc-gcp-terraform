@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: http-pulsar-poller-jyvaskyla
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj//http-pulsar-poller:edge
+    argocd-image-updater.argoproj.io/myalias: digest
 spec:
   project: waltti
   source:
