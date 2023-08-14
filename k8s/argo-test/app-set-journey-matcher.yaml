@@ -4,8 +4,9 @@ metadata:
   name: journey-matcher
   namespace: argocd
   annotations:
+    argocd-image-updater.argoproj.io/write-back-method: argocd
     argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/waltti-apc-journey-matcher:edge
-    argocd-image-updater.argoproj.io/myalias: digest
+    argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   generators:
   - list:
@@ -23,5 +24,8 @@ spec:
         repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
         targetRevision: HEAD
         path: manifests/journey-matcher/overlays/{{cluster}}
+      syncPolicy:
+        automated: {}
       destination:
         server: '{{url}}'
+  
