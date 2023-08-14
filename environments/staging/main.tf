@@ -14,6 +14,12 @@ resource "google_kms_crypto_key" "sops" {
   key_ring = google_kms_key_ring.sops.id
 }
 
+resource "google_kms_crypto_key_iam_member" "sops" {
+  crypto_key_id = google_kms_crypto_key.sops.id
+  role          = "roles/cloudkms.cryptoKeyDecrypter" 
+  member        =  "serviceAccount:${var.argocd_service_account}"
+}
+
 # Github 
 resource "google_iam_workload_identity_pool" "github_pool" {
   workload_identity_pool_id = "github-pool"
