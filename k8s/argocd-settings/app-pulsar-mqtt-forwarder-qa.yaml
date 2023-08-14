@@ -15,4 +15,6 @@ spec:
   destination:
     server: https://34.159.35.141
   syncPolicy:  
-    automated: {}
+    automated: 
+      prune: true
+      selfheal: true
