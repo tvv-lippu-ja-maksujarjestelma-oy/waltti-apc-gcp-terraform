@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: http-pulsar-poller-kuopio
+  name: mqtt-deduplicator-qa
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list: myalias=tvvlmj/http-pulsar-poller:edge
+    argocd-image-updater.argoproj.io/image-list: myalias=tvvlmj/pulsar-topic-deduplicator:edge
     argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/http-pulsar-poller/kuopio/overlays/dev
+    path: manifests/mqtt-deduplicator/overlays/qa
   destination:
-    server: https://kubernetes.default.svc
+    server: https://34.159.35.141
   syncPolicy:  
     automated: {}

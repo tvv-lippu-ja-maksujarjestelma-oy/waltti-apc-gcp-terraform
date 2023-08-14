@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mqtt-deduplicator
+  name: journey-matcher-dev
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list: myalias=tvvlmj/pulsar-topic-deduplicator:edge
+    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/waltti-apc-journey-matcher:edge
     argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/mqtt-deduplicator/overlays/dev
+    path: manifests/journey-matcher/overlays/dev
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:  

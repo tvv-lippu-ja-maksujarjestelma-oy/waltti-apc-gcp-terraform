@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mqtt-pulsar-forwarder
+  name: http-pulsar-poller-kuopio-dev
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list:  myalias=tvvlmj/mqtt-pulsar-forwarder:edge
+    argocd-image-updater.argoproj.io/image-list: myalias=tvvlmj/http-pulsar-poller:edge
     argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/mqtt-pulsar-forwarder/overlays/dev
+    path: manifests/http-pulsar-poller/kuopio/overlays/dev
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:  

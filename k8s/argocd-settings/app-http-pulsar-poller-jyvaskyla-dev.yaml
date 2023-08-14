@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: http-pulsar-poller-jyvaskyla
+  name: http-pulsar-poller-jyvaskyla-dev
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
