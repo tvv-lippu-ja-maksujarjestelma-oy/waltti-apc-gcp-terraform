@@ -3,9 +3,12 @@ kind: Application
 metadata:
   name: mqtt-deduplicator-qa
   namespace: argocd
+  labels:
+    environment: staging
+    name: mqtt-deduplicator
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list: myalias=tvvlmj/pulsar-topic-deduplicator:edge
+    argocd-image-updater.argoproj.io/image-list: tvvlmj/pulsar-topic-deduplicator:edge
     argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   project: waltti
