@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: http-pulsar-poller-jyvaskyla-dev
+  name: gtfsrt-vp-poller-fi-jyvaskyla-qa
   namespace: argocd
   labels:
-    environment: dev
-    name: http-pulsar-poller-jyvaskyla
+    environment: staging
+    name: gtfsrt-vp-poller-fi-jyvaskyla
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
     argocd-image-updater.argoproj.io/image-list: tvvlmj/http-pulsar-poller:edge
@@ -14,9 +14,10 @@ spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/http-pulsar-poller/jyvaskyla/overlays/dev
+    path: manifests/gtfsrt-vp-poller/jyvaskyla/overlays/staging
   destination:
-    server: https://kubernetes.default.svc
+    server: https://34.159.35.141
   syncPolicy:  
     automated: 
       prune: true
+      selfHeal: true
