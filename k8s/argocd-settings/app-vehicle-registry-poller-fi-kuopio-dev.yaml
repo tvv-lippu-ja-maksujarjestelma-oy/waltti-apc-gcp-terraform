@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vehicle-registry-poller-fi-kuopio-dev
+  namespace: argocd
+  labels:
+    environment: dev
+    name: vehicle-registry-poller-fi-kuopio-dev
+  annotations:
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+    argocd-image-updater.argoproj.io/image-list: tvvlmj/http-pulsar-poller:edge
+    argocd-image-updater.argoproj.io/update-strategy: digest
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/vehicle-registry-poller/kuopio/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:  
+    automated: 
+      prune: true
