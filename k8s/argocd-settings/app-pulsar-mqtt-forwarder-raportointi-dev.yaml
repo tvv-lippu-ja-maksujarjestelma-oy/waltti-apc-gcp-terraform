@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pulsar-mqtt-forwarder-qa
+  name: pulsar-mqtt-forwarder-raportointi
   namespace: argocd
   labels:
-    environment: staging
-    name: pulsar-mqtt-forwarder
+    environment: dev
+    name: pulsar-mqtt-forwarder-raportointi
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
     argocd-image-updater.argoproj.io/image-list: tvvlmj/pulsar-mqtt-forwarder:edge
@@ -14,9 +14,9 @@ spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/pulsar-mqtt-forwarder/overlays/staging
+    path: manifests/pulsar-mqtt-forwarder/raportointi/overlays/dev
   destination:
-    server: https://34.159.35.141
+    server: https://kubernetes.default.svc
   syncPolicy:  
     automated: 
       prune: true
