@@ -1,9 +1,10 @@
 module "cloudamqp" {
-  source       = "../../modules/external-service"
-  service_name = "cloudamqp"
-  environment  = var.environment
-  region       = var.region
-  project_id   = var.project_id
+  source                         = "../../modules/external-service"
+  service_name                   = "cloudamqp"
+  allow_service_account_creation = true
+  environment                    = var.environment
+  region                         = var.region
+  project_id                     = var.project_id
 }
 
 module "mqtt" {

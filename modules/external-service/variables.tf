@@ -17,3 +17,8 @@ variable "secret_name_starts" {
 variable "service_name" {
   type = string
 }
+
+variable "allow_service_account_creation" {
+  type = bool
+  default = false
+}

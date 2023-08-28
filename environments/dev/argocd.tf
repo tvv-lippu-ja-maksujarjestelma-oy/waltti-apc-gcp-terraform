@@ -12,8 +12,8 @@ module "argo_allowed" {
 
   security_rules = {
     "allow_accces" = {
-      action = "allow"
-      priority = 11
+      action        = "allow"
+      priority      = 11
       src_ip_ranges = var.management_cidrs
     }
   }

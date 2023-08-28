@@ -10,7 +10,7 @@ resource "google_storage_bucket" "pulsar_cloud_sink" {
 resource "google_service_account" "pulsar_sink" {
   account_id   = "pulsar-sink"
   display_name = "pulsar-sink"
-  description = "Pulsar data bucket sink"
+  description  = "Pulsar data bucket sink"
 }
 
 resource "google_storage_bucket_iam_member" "this_service" {
