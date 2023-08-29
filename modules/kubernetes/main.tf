@@ -23,7 +23,7 @@ resource "google_container_cluster" "primary" {
   enable_autopilot = true
   # GKE autopilot are by default in regular channel
   # See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels
-  min_master_version = "1.25.8-gke.500"
+  min_master_version = var.k8s_version
 
   network    = "network"
   subnetwork = "${var.environment}-gke"

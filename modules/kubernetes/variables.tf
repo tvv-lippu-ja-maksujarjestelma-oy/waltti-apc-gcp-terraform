@@ -22,3 +22,8 @@ variable "cluster_name" {
   default = "prototype"
   
 }
+
+variable "k8s_version" {
+  type    = string
+  default = "1.25.8-gke.500" 
+}
