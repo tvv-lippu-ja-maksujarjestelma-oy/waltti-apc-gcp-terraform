@@ -4,5 +4,5 @@ module "cluster" {
   network_name     = module.network.network_name
   management_cidrs = var.management_cidrs
   project_id       = var.project_id
-  k8s_version      = "1.27.3-gke.100" 
+  k8s_version      = "1.27.3-gke.100"
 }
