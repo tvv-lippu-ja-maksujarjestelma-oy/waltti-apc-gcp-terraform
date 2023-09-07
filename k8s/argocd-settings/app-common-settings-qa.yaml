@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: common-kubernetes-settings-qa
+  namespace: argocd
+  labels:
+    environment: staging
+    name: common-k8s-settings
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/common-settings/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy: 
+    automated: {}
