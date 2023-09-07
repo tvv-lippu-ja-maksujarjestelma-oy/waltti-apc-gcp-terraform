@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: anonymizer
+  name: anonymizer-qa
   namespace: argocd
   labels:
     environment: staging
