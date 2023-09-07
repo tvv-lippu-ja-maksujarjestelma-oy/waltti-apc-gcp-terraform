@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pulsar-mqtt-forwarder-rtpi
+  name: pulsar-mqtt-forwarder-rtpi-dev
   namespace: argocd
   labels:
     environment: dev
