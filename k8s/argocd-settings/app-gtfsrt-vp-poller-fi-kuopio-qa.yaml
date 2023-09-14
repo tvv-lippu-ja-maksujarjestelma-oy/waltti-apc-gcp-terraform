@@ -14,7 +14,7 @@ spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/gtfsrt-vp-poller-fi/kuopio/overlays/staging
+    path: manifests/gtfsrt-vp-poller/kuopio/overlays/staging
   destination:
     server: https://34.159.35.141
   syncPolicy:  
