@@ -1,6 +1,6 @@
 # Mismatch in k8s namespace (dev) and actual env (created as sandbox)
 # Note this terraform module/GCP has issues, might have to run multiple times to create them all
- module "anonymizer" {
+module "anonymizer" {
   source          = "../../modules/monitor-service"
   service_id      = "anonymizer"
   controller_name = "anonymizer"
@@ -34,6 +34,16 @@ module "journey_matcher" {
   source          = "../../modules/monitor-service"
   service_id      = "journey-matcher"
   controller_name = "journey-matcher"
+  cluster_name    = "prototype"
+  environment     = "dev"
+  region          = var.region
+  project_id      = var.project_id
+}
+
+module "vehicle-position-splitter" {
+  source          = "../../modules/monitor-service"
+  service_id      = "vehicle-position-splitter"
+  controller_name = "vehicle-position-splitter"
   cluster_name    = "prototype"
   environment     = "dev"
   region          = var.region
