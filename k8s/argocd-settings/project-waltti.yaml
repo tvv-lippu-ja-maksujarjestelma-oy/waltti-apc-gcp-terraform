@@ -4,6 +4,13 @@ metadata:
   name: waltti
   namespace: argocd
 spec:
+  syncWindows:
+  - kind: allow
+    schedule: "5 6 * * WED"
+    duration: 1h
+    applications:
+    - "*-qa"
+    manualSync: true
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
