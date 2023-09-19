@@ -6,8 +6,8 @@ metadata:
 spec:
   syncWindows:
   - kind: allow
-    schedule: "5 6 * * WED"
-    duration: 1h
+    schedule: "5 6 * * 3"
+    duration: 2h
     applications:
     - "*-qa"
     manualSync: true
