@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vehicle-position-splitter-kuopio-staging
+  name: vehicle-position-splitter-kuopio-qa
   namespace: argocd
   labels:
     environment: staging
