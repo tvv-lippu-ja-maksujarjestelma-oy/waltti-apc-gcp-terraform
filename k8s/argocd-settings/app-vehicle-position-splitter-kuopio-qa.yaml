@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vehicle-position-splitter-kuopio-staging
+  namespace: argocd
+  labels:
+    environment: staging
+    name: vehicle-position-splitter-kuopio
+  annotations:
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+    argocd-image-updater.argoproj.io/image-list: tvvlmj/waltti-apc-vehicle-position-splitter:edge
+    argocd-image-updater.argoproj.io/update-strategy: digest
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/vehicle-position-splitter/kuopio/overlays/staging
+  destination:
+    server: https://34.159.35.141
+  syncPolicy:
+    automated:
+      prune: true
