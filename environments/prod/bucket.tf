@@ -11,3 +11,9 @@ resource "google_storage_bucket" "gcp-tf-state" {
 }
 
 #  Normal buckets here!
+resource "google_logging_project_bucket_config" "lock_default_bucket" {
+  project        = var.project_id
+  location       = "global"
+  retention_days = 90
+  bucket_id      = "_Default"
+}

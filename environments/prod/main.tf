@@ -16,8 +16,8 @@ resource "google_kms_crypto_key" "sops" {
 
 resource "google_kms_crypto_key_iam_member" "sops" {
   crypto_key_id = google_kms_crypto_key.sops.id
-  role          = "roles/cloudkms.cryptoKeyDecrypter" 
-  member        =  "serviceAccount:${var.argocd_service_account}"
+  role          = "roles/cloudkms.cryptoKeyDecrypter"
+  member        = "serviceAccount:${var.argocd_service_account}"
 }
 
 # Github 
