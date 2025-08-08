@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rabbitmq-dev-serviceaccount
+  labels:
+    app.kubernetes.io/name: rabbitmq-dev
+    app.kubernetes.io/component: rabbitmq-server
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rabbitmq-dev-rabbitmq-endpoint-reader
+  labels:
+    app.kubernetes.io/name: rabbitmq-dev
+    app.kubernetes.io/component: rabbitmq-server
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rabbitmq-dev-rabbitmq-endpoint-reader
+  labels:
+    app.kubernetes.io/name: rabbitmq-dev
+    app.kubernetes.io/component: rabbitmq-server
+subjects:
+- kind: ServiceAccount
+  name: rabbitmq-dev-serviceaccount
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: rabbitmq-dev-rabbitmq-endpoint-reader

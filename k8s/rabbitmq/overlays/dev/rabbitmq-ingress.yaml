@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: rabbitmq
+    networking.gke.io/managed-certificates: rabbitmq-cert
+    networking.gke.io/v1beta1.FrontendConfig: rabbitmq-frontend-config
+spec:
+  rules:
+    - host: mqtts-dev.apc.waltti.fi
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rabbitmq-dev-rabbitmq-svc
+                port:
+                  name: http

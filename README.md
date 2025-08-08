@@ -11,8 +11,14 @@
 
 ## Kubernes setup
 
-k8s contains raw yaml files for installing ArgoCD
+k8s contains raw yaml files for installing:
+- ArgoCD
+- RabbitMQ
+- Cert-Manager
 
+### Cert-Manager
+Cert-manager tries by default to create resources in the kube-system namespace, which is not possible in GKE autopilot.
+All mentions of kube-system are replaced with cert-manager namespace.
 
 ## Modules
 
