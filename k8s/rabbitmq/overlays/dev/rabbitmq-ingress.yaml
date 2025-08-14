@@ -1,15 +1,16 @@
+# Ingress for the management UI
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: rabbitmq
   namespace: rabbitmq
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: rabbitmq
-    networking.gke.io/managed-certificates: rabbitmq-cert
+    kubernetes.io/ingress.global-static-ip-name: rabbitmq-ui
+    networking.gke.io/managed-certificates: rabbitmq-dev-http-cert
     networking.gke.io/v1beta1.FrontendConfig: rabbitmq-frontend-config
 spec:
   rules:
-    - host: mqtts-dev.apc.waltti.fi
+    - host: rabbitmq-dev.apc.waltti.fi
       http:
         paths:
           - path: /
@@ -19,3 +20,24 @@ spec:
                 name: rabbitmq-dev-rabbitmq-svc
                 port:
                   name: http
+---
+# TCP Load balancer for MQTTS traffic
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-mqtts
+  labels:
+    app.kubernetes.io/name: rabbitmq-dev
+    app.kubernetes.io/component: rabbitmq-server
+  annotations:
+    cloud.google.com/l4-rbs: "enabled"
+    networking.gke.io/load-balancer-ip-addresses: rabbitmq
+spec:
+  ports:
+  - name: mqtts
+    protocol: TCP
+    port: 8883
+  selector:
+    app.kubernetes.io/name: rabbitmq-dev
+    app.kubernetes.io/component: rabbitmq-server
+  type: LoadBalancer

@@ -5,7 +5,7 @@ metadata:
   namespace: rabbitmq
 spec:
   domains:
-    - mqtts-dev.apc.waltti.fi
+    - rabbitmq-dev.apc.waltti.fi
 ---
 # Root CA from issuer since ACME doesn't provide one
 # In this case it's from Let's Encrypt

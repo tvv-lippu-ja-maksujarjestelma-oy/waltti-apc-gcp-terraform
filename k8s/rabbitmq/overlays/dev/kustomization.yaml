@@ -6,6 +6,7 @@ resources:
   - rabbitmq-install-v3.13.yaml
   - rabbitmq-cert.yaml
   - rabbitmq-ingress.yaml
+  - rabbitmq-frontend.yaml
 
 generators:
   - ./ksops-secret-generator.yaml
