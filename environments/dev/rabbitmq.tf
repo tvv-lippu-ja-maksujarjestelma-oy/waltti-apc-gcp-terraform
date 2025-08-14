@@ -1,3 +1,4 @@
 module "rabbitmq" {
-  source     = "../../modules/rabbitmq"
+  source = "../../modules/rabbitmq"
+  region = var.region
 }
