@@ -60,8 +60,8 @@ spec:
       name: rabbitmq-dev-cert-issuer-account-key
     solvers:
     - dns01:
-      cloudDNS:
-        project: apc-sandbox
+        cloudDNS:
+          project: apc-sandbox
 ---
 # MQTTS cert setup
 apiVersion: cert-manager.io/v1
