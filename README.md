@@ -19,18 +19,18 @@ k8s contains raw yaml files for installing:
 ### Cert-Manager
 Cert-manager tries by default to create resources in the kube-system namespace, which is not possible in GKE autopilot. All mentions of kube-system are replaced with cert-manager namespace.
 
-Also to use the DNS solver for an issuer, you need to link the cert-manager service account to the GCP service account with the permissions to modify DNS records:
+Also to use the DNS solver for an issuer, you need to link the cert-manager service account to the GCP service account with the permissions to modify DNS records. DNS management is done in the apc-sandbox project:
 
 ```shell
 kubectl annotate serviceaccount --namespace=cert-manager cert-manager \
-    "iam.gke.io/gcp-service-account=cert-manager-dns@$PROJECT_ID.iam.gserviceaccount.com"
+    "iam.gke.io/gcp-service-account=cert-manager-dns@apc-sandbox.iam.gserviceaccount.com"
 ```
 
 and vice-versa
 
 ```shell
-gcloud iam service-accounts add-iam-policy-binding \
-    cert-manager-dns@$PROJECT_ID.iam.gserviceaccount.com \
+gcloud --project apc-sandbox iam service-accounts add-iam-policy-binding \
+    cert-manager-dns@apc-sandbox.iam.gserviceaccount.com \
     --member "serviceAccount:$PROJECT_ID.svc.id.goog[cert-manager/cert-manager]" \
     --role roles/iam.workloadIdentityUser
 ```
