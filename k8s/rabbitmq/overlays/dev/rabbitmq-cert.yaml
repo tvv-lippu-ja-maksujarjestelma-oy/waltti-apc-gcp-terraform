@@ -59,13 +59,9 @@ spec:
     privateKeySecretRef:
       name: rabbitmq-dev-cert-issuer-account-key
     solvers:
-    - http01:
-        ingress:
-          class: gce
-          ingressTemplate:
-            metadata:
-              annotations:
-                kubernetes.io/ingress.global-static-ip-name: rabbitmq
+    - dns01:
+      cloudDNS:
+        project: apc-sandbox
 ---
 # MQTTS cert setup
 apiVersion: cert-manager.io/v1

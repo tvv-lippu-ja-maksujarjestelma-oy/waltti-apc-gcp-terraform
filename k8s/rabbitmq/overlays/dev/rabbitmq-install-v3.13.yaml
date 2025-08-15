@@ -36,7 +36,6 @@ data:
       ssl_options.cacertfile            = /etc/rabbitmq/ca/ca.crt
       ssl_options.certfile              = /etc/rabbitmq/certs/tls.crt
       ssl_options.keyfile               = /etc/rabbitmq/certs/tls.key
-      # For development
       ssl_options.verify                = verify_none
       ssl_options.fail_if_no_peer_cert  = false
 ---
