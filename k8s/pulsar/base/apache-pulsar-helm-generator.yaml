@@ -1,0 +1,15 @@
+---
+# https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_
+# https://github.com/apache/pulsar-helm-chart
+# Reference: 'helm install -n <namespace> --create-namespace <release-name> -f your-values.yaml apachepulsar/pulsar'
+# Result: 'helm install --namespace pulsar pulsar apachepulsar/pulsar'
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: apache-pulsar-helm-generator
+name: apachepulsar/pulsar
+repo: https://pulsar.apache.org/charts
+version: "4.2.0"
+releaseName: pulsar
+namespace: pulsar # ./namespace.yaml
+valuesFile: apache-pulsar-helm-values.yaml

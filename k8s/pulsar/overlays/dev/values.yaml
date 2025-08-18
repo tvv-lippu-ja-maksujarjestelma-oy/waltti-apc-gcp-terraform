@@ -1,0 +1,13 @@
+---
+######################
+# Development values #
+######################
+
+# Disable persistence in volumes (use emptyDir)
+volumes:
+  persistence: false
+
+# Disable persistence in broker (broker.configData.autoSkipNonRecoverableData)
+broker:
+  configData:
+    autoSkipNonRecoverableData: "true"

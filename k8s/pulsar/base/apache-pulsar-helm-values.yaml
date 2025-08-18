@@ -1,0 +1,109 @@
+---
+#######################
+# Default base values #
+#######################
+
+# Disable unnecessary components
+components:
+  # zookeeper
+  # zookeeper: true
+  # bookkeeper
+  # bookkeeper: true
+  # bookkeeper - autorecovery
+  # autorecovery: true
+  # broker
+  # broker: true
+  # functions
+  functions: false
+  # proxy
+  proxy: false
+  # toolset
+  # toolset: true
+  # pulsar manager
+  pulsar_manager: false
+
+# Disable monitoring stack workloads
+victoria-metrics-k8s-stack:
+  enabled: false
+  victoria-metrics-operator:
+    enabled: false
+  vmsingle:
+    enabled: false
+  vmagent:
+    enabled: false
+  kube-state-metrics:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+  grafana:
+    enabled: false
+
+# Disable monitoring scrapers (*.podMonitors)
+# Use private GCP components (*.service.annotations)
+# Use SSDs for persistence (*.volumes.data.storageClassName)
+autorecovery:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+bookkeeper:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+oxia:
+  server:
+    podMonitor:
+      enabled: false
+    service:
+      annotations:
+        networking.gke.io/load-balancer-type: "Internal"
+    volumes:
+      data:
+        storageClassName: premium-rwo
+  coordinator:
+    podMonitor:
+      enabled: false
+    service:
+      annotations:
+        networking.gke.io/load-balancer-type: "Internal"
+    volumes:
+      data:
+        storageClassName: premium-rwo
+broker:
+  podMonitor:
+    enabled: false
+  configData:
+    autoSkipNonRecoverableData: "true"
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+proxy:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+zookeeper:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+  volumes:
+    data:
+      storageClassName: premium-rwo
+      networking.gke.io/load-balancer-type: "Internal"
