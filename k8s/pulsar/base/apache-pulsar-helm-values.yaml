@@ -81,8 +81,6 @@ oxia:
 broker:
   podMonitor:
     enabled: false
-  configData:
-    autoSkipNonRecoverableData: "true"
   service:
     annotations:
       networking.gke.io/load-balancer-type: "Internal"
@@ -103,7 +101,7 @@ zookeeper:
     enabled: false
   service:
     annotations:
+      networking.gke.io/load-balancer-type: "Internal"
   volumes:
     data:
       storageClassName: premium-rwo
-      networking.gke.io/load-balancer-type: "Internal"
