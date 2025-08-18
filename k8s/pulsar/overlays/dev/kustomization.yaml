@@ -13,7 +13,7 @@ patches:
     metadata:
       name: apache-pulsar-helm-generator
     # Environment-specific chart version
-    version: "4.2.0"
+    version: v4.2.0
     # Environment-specific values
     additionalValuesFiles:
       - values.yaml

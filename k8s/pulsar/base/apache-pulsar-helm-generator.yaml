@@ -7,9 +7,9 @@ apiVersion: builtin
 kind: HelmChartInflationGenerator
 metadata:
   name: apache-pulsar-helm-generator
-name: apachepulsar/pulsar
+name: pulsar
 repo: https://pulsar.apache.org/charts
-version: "4.2.0"
+version: v4.2.0
 releaseName: pulsar
 namespace: pulsar # ./namespace.yaml
 valuesFile: apache-pulsar-helm-values.yaml
