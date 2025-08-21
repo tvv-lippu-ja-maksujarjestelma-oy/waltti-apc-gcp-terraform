@@ -5,6 +5,7 @@ module "argocd" {
 
 module "argo_allowed" {
   source              = "GoogleCloudPlatform/cloud-armor/google"
+  version             = "~> 5.1.0" # Latest with supported provider requirements
   project_id          = var.project_id
   name                = "argocd-access"
   description         = "Allow ArgoCD access"
@@ -18,3 +19,4 @@ module "argo_allowed" {
     }
   }
 }
+

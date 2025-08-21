@@ -1,9 +1,10 @@
 terraform {
   required_providers {
     google = {
-      source  = "hashicorp/google"
-      version = "~> 6.45.0"
+      source = "hashicorp/google"
+      # Provider version is resolved from used modules
     }
+    # google-beta is implicitly included by cloud-armor/google
   }
 
   required_version = "~> 1.5"
