@@ -26,15 +26,6 @@ kubectl annotate serviceaccount --namespace=cert-manager cert-manager \
     "iam.gke.io/gcp-service-account=cert-manager-dns@apc-sandbox.iam.gserviceaccount.com"
 ```
 
-and vice-versa
-
-```shell
-gcloud --project apc-sandbox iam service-accounts add-iam-policy-binding \
-    cert-manager-dns@apc-sandbox.iam.gserviceaccount.com \
-    --member "serviceAccount:$PROJECT_ID.svc.id.goog[cert-manager/cert-manager]" \
-    --role roles/iam.workloadIdentityUser
-```
-
 ### RabbitMQ
 
 More information at [RABBITMQ.MD](./RABBITMQ.MD)
