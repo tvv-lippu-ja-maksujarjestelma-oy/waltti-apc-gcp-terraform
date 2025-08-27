@@ -38,6 +38,8 @@ data:
       ssl_options.keyfile               = /etc/rabbitmq/certs/tls.key
       ssl_options.verify                = verify_none
       ssl_options.fail_if_no_peer_cert  = false
+      # Disable TCP without TLS
+      listeners.tcp = none
 ---
 # Source: rabbitmq/templates/service-discovery.yaml
 # This headless service allows communication between RabbitMQ nodes via hostname instead of IP addresses.
@@ -52,16 +54,10 @@ metadata:
     app.kubernetes.io/component: rabbitmq-server
 spec:
   ports:
-  - name: amqp
-    port: 5672
-  - name: amqp-ssl
-    port: 5671
   - name: clustering
     port: 25672
   - name: prometheus
     port: 15692
-  - name: mqtt
-    port: 1883
   - name: mqtts
     port: 8883
   - name: http
@@ -84,16 +80,10 @@ metadata:
     app.kubernetes.io/component: rabbitmq-server
 spec:
   ports:
-  - name: amqp
-    port: 5672
-  - name: amqp-ssl
-    port: 5671
   - name: clustering
     port: 25672
   - name: prometheus
     port: 15692
-  - name: mqtt
-    port: 1883
   - name: mqtts
     port: 8883
   - name: http
