@@ -10,9 +10,9 @@ resource "google_service_account_iam_member" "argocd_gke" {
   member             = "serviceAccount:${var.project_id}.svc.id.goog[argocd/argocd-gke]" # k8s namespace/sa
 }
 
-resource "google_project_iam_member" "argocd_gke" {
+resource "google_project_iam_member" "argocd-gke" {
   project = var.project_id
-  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  role    = "roles/cloudkms.cryptoKeyDecrypter"
   member  = "serviceAccount:${google_service_account.argocd_gke.email}"
 }
 
