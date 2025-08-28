@@ -18,7 +18,7 @@ components:
   # proxy
   proxy: false
   # toolset
-  # toolset: true
+  toolset: false
   # pulsar manager
   pulsar_manager: false
 
