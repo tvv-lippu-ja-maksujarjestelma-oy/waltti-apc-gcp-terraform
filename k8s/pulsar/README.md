@@ -30,7 +30,9 @@ The chart is meant for production deployments even though it is not safe for pro
 This will also pull the chart to `./base/charts` if it did not exist.
 
 ```sh
+# Navigate to environment overlay directory
 cd overlays/dev
+# Render the resulting manifest
 kubectl kustomize --enable-helm
 ```
 
@@ -38,10 +40,13 @@ kubectl kustomize --enable-helm
 
 Remember to set your kube context appropriately.
 
-```
+```sh
+# Activate the correct kube context
 kubectl config use-context my-dev-cluster-context
+# Navigate to matching environment overlay directory
 cd overlays/dev
-kubectl apply --kustomize .
+# Render the manifest and apply it
+kubectl kustomize --enable-helm | kubectl apply -f -
 ```
 
 ## References
