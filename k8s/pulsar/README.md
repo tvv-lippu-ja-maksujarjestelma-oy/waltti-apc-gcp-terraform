@@ -23,6 +23,17 @@ The chart is meant for production deployments even though it is not safe for pro
 - Kustomize 5.x ([bundled with kubectl 1.14+](https://kubernetes.io/docs/tasks/tools/#kubectl))
 - [Helm 3.x](https://helm.sh/docs/intro/install/) available in `$PATH` as `helm`
 
+## GKE considerations
+
+Autopilot `requests` require special care:
+
+- https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#workload-separation
+- https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#resource-limits
+
+Due to how Autopilot modifies the deployment of the chart, some `requests` are set manually to work around
+these issues. The defaults Autopilot sets for anti-affinity pods are too low, so the deployment would get
+rejected even after automatic adjustment.
+
 ## Usage
 
 ### Render manifests
@@ -49,20 +60,10 @@ cd overlays/dev
 kubectl kustomize --enable-helm | kubectl apply -f -
 ```
 
-#### GKE considerations
-
-Autopilot `requests` require special care:
-
-- https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#workload-separation
-- https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#resource-limits
-
-Due to how Autopilot modifies the deployment of the chart, some `requests` are set manually to work around
-these issues. The defaults Autopilot sets for anti-affinity pods are too low, so the deployment would get
-rejected even after automatic adjustment.
-
 ## References
 
 - [apache/pulsar-helm-chart](https://github.com/apache/pulsar-helm-chart/tree/master)
 - [HelmChartInflationGenerator](https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_)
 - [Kustomization Helm example](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/chart.md)
 - [Declarative Management of Kubernetes Objects Using Kustomize (kubernetes.io)](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
+

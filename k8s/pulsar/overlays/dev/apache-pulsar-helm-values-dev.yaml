@@ -11,3 +11,6 @@ volumes:
 broker:
   configData:
     autoSkipNonRecoverableData: "true"
+
+components:
+  toolset: true # TODO/DEBUG: Let's figure out where installation fails

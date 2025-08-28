@@ -3,17 +3,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ../../base
-patches:
-- target:
-    kind: HelmChartInflationGenerator
-    name: apache-pulsar-helm-generator
-  patch: |-
-    apiVersion: builtin
-    kind: HelmChartInflationGenerator
-    metadata:
-      name: apache-pulsar-helm-generator
-    # Environment-specific chart version
-    version: v4.2.0
-    # Environment-specific values
-    additionalValuesFiles:
-      - values.yaml
+# Because generators cannot be patched, they are duplicated
+generators:
+- ./apache-pulsar-helm-generator.yaml
