@@ -12,5 +12,6 @@ broker:
   configData:
     autoSkipNonRecoverableData: "true"
 
-components:
-  toolset: true # TODO/DEBUG: Let's figure out where installation fails
+# In case you have to debug, you can enable toolset:
+# components:
+#   toolset: true

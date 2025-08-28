@@ -5,21 +5,15 @@
 
 # Disable unnecessary components
 components:
-  # zookeeper
+  # Vital components:
   # zookeeper: true
-  # bookkeeper
   # bookkeeper: true
-  # bookkeeper - autorecovery
-  # autorecovery: true
-  # broker
+  # autorecovery: true # bookkeeper
   # broker: true
-  # functions
+  # Additional components:
   functions: false
-  # proxy
-  proxy: false
-  # toolset
+  proxy: false # TODO/DEBUG: Required or not??
   toolset: false
-  # pulsar manager
   pulsar_manager: false
 
 # Disable monitoring stack workloads
@@ -90,7 +84,6 @@ oxia:
     volumes:
       data:
         storageClassName: premium-rwo
-# Broker requests are adjusted high enough by Autopilot by default
 broker:
   podMonitor:
     enabled: false
@@ -100,16 +93,25 @@ broker:
   volumes:
     data:
       storageClassName: premium-rwo
-# (Proxy is a disabled component)
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.25 # TODO/DEBUG: autoadjust worked, 0.5 requireD?? Default: 0.2
 proxy:
   podMonitor:
     enabled: false
   service:
     annotations:
       networking.gke.io/load-balancer-type: "Internal"
+  affinity:
+    anti_affinity: true # Documentative explicit default
   volumes:
     data:
       storageClassName: premium-rwo
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.2
 zookeeper:
   podMonitor:
     enabled: false
@@ -124,3 +126,17 @@ zookeeper:
   resources:
     requests:
       cpu: 0.5 # Default: 0.1
+
+# Cluster initialization fails with default settings because the unconfigurable
+# timeout command introduced in
+# https://github.com/apache/pulsar-helm-chart/pull/218/files causes an
+# init container to exit before the command returns anything. Testing
+# with pulsar-toolset, the following timings could be observed for
+# 'bin/bookkeeper shell': 0.25 CPU: ~20sec, 0.50 CPU: ~10sec, 1.00 CPU: ~5sec
+# As most/all pods use init containers, this also effects continuous operation,
+# not only cluster initialization.
+initContainer:
+  resources:
+    requests:
+      # Aims to leave ~10 seconds from allotted 15 seconds to the actual work after JVM initializes
+      cpu: 1.0
