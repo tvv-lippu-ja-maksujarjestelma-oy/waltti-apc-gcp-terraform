@@ -48,6 +48,16 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "control_plane_endpoints_config" {
+    # Conditionally enabled. Only one block per resource.
+    for_each = var.dns_endpoint_enabled == true ? toset([true]) : toset([])
+    content {
+      dns_endpoint_config {
+        allow_external_traffic = var.dns_endpoint_enabled
+      }
+    }
+  }
+
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false # Enable access from both private and public endpoints
@@ -90,3 +100,4 @@ resource "google_container_cluster" "primary" {
   }
 
 }
+
