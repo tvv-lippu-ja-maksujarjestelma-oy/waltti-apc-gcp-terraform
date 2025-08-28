@@ -41,6 +41,7 @@ victoria-metrics-k8s-stack:
 # Disable monitoring scrapers (*.podMonitors)
 # Use private GCP components (*.service.annotations)
 # Use SSDs for persistence (*.volumes.data.storageClassName)
+# Modify requests for anti-affinity pods for GKE Autopilot General-purpose compute class (*.resources.requests)
 autorecovery:
   podMonitor:
     enabled: false
@@ -50,6 +51,11 @@ autorecovery:
   volumes:
     data:
       storageClassName: premium-rwo
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.05
 bookkeeper:
   podMonitor:
     enabled: false
@@ -59,6 +65,12 @@ bookkeeper:
   volumes:
     data:
       storageClassName: premium-rwo
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.2
+# Oxia server requests are high enough by default (1/1Gi), coordinator is not anti-affinity.
 oxia:
   server:
     podMonitor:
@@ -78,6 +90,7 @@ oxia:
     volumes:
       data:
         storageClassName: premium-rwo
+# Broker requests are adjusted high enough by Autopilot by default
 broker:
   podMonitor:
     enabled: false
@@ -87,6 +100,7 @@ broker:
   volumes:
     data:
       storageClassName: premium-rwo
+# (Proxy is a disabled component)
 proxy:
   podMonitor:
     enabled: false
@@ -105,3 +119,8 @@ zookeeper:
   volumes:
     data:
       storageClassName: premium-rwo
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.1

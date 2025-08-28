@@ -45,9 +45,20 @@ Remember to set your kube context appropriately.
 kubectl config use-context my-dev-cluster-context
 # Navigate to matching environment overlay directory
 cd overlays/dev
-# Render the manifest and apply it
+# Render the manifest and apply it directly from stdin
 kubectl kustomize --enable-helm | kubectl apply -f -
 ```
+
+#### GKE considerations
+
+Autopilot `requests` require special care:
+
+- https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#workload-separation
+- https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#resource-limits
+
+Due to how Autopilot modifies the deployment of the chart, some `requests` are set manually to work around
+these issues. The defaults Autopilot sets for anti-affinity pods are too low, so the deployment would get
+rejected even after automatic adjustment.
 
 ## References
 
