@@ -31,6 +31,15 @@ data:
       ## via a loopback interface (e.g. localhost)
       ## See http://www.rabbitmq.com/access-control.html#loopback-users
       loopback_users.guest = false
+      # Enable MQTTS
+      mqtt.listeners.ssl.default        = 8883
+      ssl_options.cacertfile            = /etc/rabbitmq/ca/ca.crt
+      ssl_options.certfile              = /etc/rabbitmq/certs/tls.crt
+      ssl_options.keyfile               = /etc/rabbitmq/certs/tls.key
+      ssl_options.verify                = verify_none
+      ssl_options.fail_if_no_peer_cert  = false
+      # Disable TCP without TLS
+      listeners.tcp = none
 ---
 # Source: rabbitmq/templates/service-discovery.yaml
 # This headless service allows communication between RabbitMQ nodes via hostname instead of IP addresses.
@@ -45,14 +54,12 @@ metadata:
     app.kubernetes.io/component: rabbitmq-server
 spec:
   ports:
-  - name: amqp
-    port: 5672
-  - name: amqp-ssl
-    port: 5671
   - name: clustering
     port: 25672
   - name: prometheus
     port: 15692
+  - name: mqtts
+    port: 8883
   - name: http
     port: 15672
   selector:
@@ -73,14 +80,12 @@ metadata:
     app.kubernetes.io/component: rabbitmq-server
 spec:
   ports:
-  - name: amqp
-    port: 5672
-  - name: amqp-ssl
-    port: 5671
   - name: clustering
     port: 25672
   - name: prometheus
     port: 15692
+  - name: mqtts
+    port: 8883
   - name: http
     port: 15672
   selector:
@@ -196,6 +201,12 @@ spec:
           mountPath: /etc/rabbitmq
         - name: rabbitmq-staging-rabbitmq-pvc
           mountPath: /var/lib/rabbitmq
+        - name: mqtts-certs
+          mountPath: /etc/rabbitmq/certs
+          readOnly: true
+        - name: root-ca
+          mountPath: /etc/rabbitmq/ca
+          readOnly: true
         livenessProbe:
           exec:
             command:
@@ -237,6 +248,15 @@ spec:
             path: rabbitmq.conf
           - key: enabled_plugins
             path: enabled_plugins
+      - name: mqtts-certs
+        secret:
+          secretName: rabbitmq-staging-mqtt-cert-secret
+      - name: root-ca
+        configMap:
+          name: rabbitmq-staging-ca
+          items:
+            - key: ca.crt
+              path: ca.crt
       - name: config
         emptyDir: {}
   volumeClaimTemplates:
