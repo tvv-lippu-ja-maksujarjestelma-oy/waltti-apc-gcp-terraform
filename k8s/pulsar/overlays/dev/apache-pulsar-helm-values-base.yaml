@@ -1,0 +1,142 @@
+---
+#######################
+# Default base values #
+#######################
+
+# Disable unnecessary components
+components:
+  # Vital components:
+  # zookeeper: true
+  # bookkeeper: true
+  # autorecovery: true # bookkeeper
+  # broker: true
+  # Additional components:
+  functions: false
+  proxy: false # TODO/DEBUG: Required or not??
+  toolset: false
+  pulsar_manager: false
+
+# Disable monitoring stack workloads
+victoria-metrics-k8s-stack:
+  enabled: false
+  victoria-metrics-operator:
+    enabled: false
+  vmsingle:
+    enabled: false
+  vmagent:
+    enabled: false
+  kube-state-metrics:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+  grafana:
+    enabled: false
+
+# Disable monitoring scrapers (*.podMonitors)
+# Use private GCP components (*.service.annotations)
+# Use SSDs for persistence (*.volumes.data.storageClassName)
+# Modify requests for anti-affinity pods for GKE Autopilot General-purpose compute class (*.resources.requests)
+autorecovery:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.05
+bookkeeper:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.2
+# Oxia server requests are high enough by default (1/1Gi), coordinator is not anti-affinity.
+oxia:
+  server:
+    podMonitor:
+      enabled: false
+    service:
+      annotations:
+        networking.gke.io/load-balancer-type: "Internal"
+    volumes:
+      data:
+        storageClassName: premium-rwo
+  coordinator:
+    podMonitor:
+      enabled: false
+    service:
+      annotations:
+        networking.gke.io/load-balancer-type: "Internal"
+    volumes:
+      data:
+        storageClassName: premium-rwo
+broker:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.25 # TODO/DEBUG: autoadjust worked, 0.5 requireD?? Default: 0.2
+proxy:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  volumes:
+    data:
+      storageClassName: premium-rwo
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.2
+zookeeper:
+  podMonitor:
+    enabled: false
+  service:
+    annotations:
+      networking.gke.io/load-balancer-type: "Internal"
+  volumes:
+    data:
+      storageClassName: premium-rwo
+  affinity:
+    anti_affinity: true # Documentative explicit default
+  resources:
+    requests:
+      cpu: 0.5 # Default: 0.1
+
+# Cluster initialization fails with default settings because the unconfigurable
+# timeout command introduced in
+# https://github.com/apache/pulsar-helm-chart/pull/218/files causes an
+# init container to exit before the command returns anything. Testing
+# with pulsar-toolset, the following timings could be observed for
+# 'bin/bookkeeper shell': 0.25 CPU: ~20sec, 0.50 CPU: ~10sec, 1.00 CPU: ~5sec
+# As most/all pods use init containers, this also effects continuous operation,
+# not only cluster initialization.
+initContainer:
+  resources:
+    requests:
+      # Aims to leave ~10 seconds from allotted 15 seconds to the actual work after JVM initializes
+      cpu: 1.0
