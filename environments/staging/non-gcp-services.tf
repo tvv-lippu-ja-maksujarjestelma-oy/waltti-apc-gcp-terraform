@@ -24,3 +24,11 @@ module "streamnative" {
   project_id   = var.project_id
 
 }
+
+module "pulsar" {
+  source       = "../../modules/external-service"
+  service_name = "pulsar"
+  environment  = var.environment
+  region       = var.region
+  project_id   = var.project_id
+}
