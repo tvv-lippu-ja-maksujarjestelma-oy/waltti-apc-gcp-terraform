@@ -53,6 +53,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: rabbitmq-staging-cert-issuer
+  namespace: rabbitmq
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory

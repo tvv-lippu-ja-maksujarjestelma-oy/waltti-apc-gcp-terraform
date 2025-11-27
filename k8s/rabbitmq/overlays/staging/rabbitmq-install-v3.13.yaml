@@ -33,6 +33,8 @@ data:
       loopback_users.guest = false
       # Enable MQTTS
       mqtt.listeners.ssl.default        = 8883
+      mqtt.vhost                        = apc
+      mqtt.exchange                     = amq.topic
       ssl_options.cacertfile            = /etc/rabbitmq/ca/ca.crt
       ssl_options.certfile              = /etc/rabbitmq/certs/tls.crt
       ssl_options.keyfile               = /etc/rabbitmq/certs/tls.key
