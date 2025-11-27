@@ -1,0 +1,22 @@
+---
+# https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_
+# Because generators cannot be patched, this file is duplicated across overlays
+# with the default base values that must be in the same directory tree as the
+# overlay.
+# https://github.com/apache/pulsar-helm-chart
+# Reference: 'helm install -n <namespace> --create-namespace <release-name> -f your-values.yaml apachepulsar/pulsar'
+# Result: 'helm install --namespace pulsar pulsar -f apache-pulsar-helm-values-base.yaml -f apache-pulsar-helm-values-staging.yaml apachepulsar/pulsar'
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: apache-pulsar-helm-generator
+name: pulsar
+repo: https://pulsar.apache.org/charts
+version: v4.2.0
+releaseName: pulsar
+namespace: pulsar # ../../base/namespace.yaml
+# Base values, should be included in every environment as a starting point
+valuesFile: apache-pulsar-helm-values-base.yaml
+# Additional environment values, should be environment specific
+additionalValuesFiles:
+- apache-pulsar-helm-values-staging.yaml

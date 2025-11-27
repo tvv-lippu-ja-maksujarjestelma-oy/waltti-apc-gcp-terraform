@@ -1,0 +1,13 @@
+---
+####################
+# Staging values   #
+####################
+
+# Enable persistence for staging
+volumes:
+  persistence: true
+
+# Safer broker behavior for staging (do not skip non-recoverable data)
+broker:
+  configData:
+    autoSkipNonRecoverableData: "false"

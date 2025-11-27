@@ -25,12 +25,32 @@ Update the configmap with the following configurations:
 
 `rabbit.conf`:
 ```conf
-mqtt.listeners.ssl.default        = 8883
-ssl_options.cacertfile            = /etc/rabbitmq/ca/ca.crt
-ssl_options.certfile              = /etc/rabbitmq/certs/tls.crt
-ssl_options.keyfile               = /etc/rabbitmq/certs/tls.key
-ssl_options.verify                = verify_none
-ssl_options.fail_if_no_peer_cert  = false
+      # Enable MQTTS
+      mqtt.listeners.ssl.default        = 8883
+      ssl_options.cacertfile            = /etc/rabbitmq/ca/ca.crt
+      ssl_options.certfile              = /etc/rabbitmq/certs/tls.crt
+      ssl_options.keyfile               = /etc/rabbitmq/certs/tls.key
+      ssl_options.verify                = verify_none
+      ssl_options.fail_if_no_peer_cert  = false
+      # Disable TCP without TLS
+      listeners.tcp = none
+```
+
+## Disabling unnecessary ports
+
+Remove unnecessary ports from services `rabbitmq-${ENV}-rabbitmq-discovery` and `rabbitmq-${ENV}-rabbitmq-svc`
+
+```conf
+spec:
+  ports:
+  - name: clustering
+    port: 25672
+  - name: prometheus
+    port: 15692
+  - name: mqtts
+    port: 8883
+  - name: http
+    port: 15672
 ```
 
 ## Mounting certificates
@@ -39,10 +59,10 @@ in volumes:
 ```yaml
       - name: mqtts-certs
         secret:
-          secretName: rabbitmq-dev-mqtt-cert-secret
+          secretName: rabbitmq-${ENV}-mqtt-cert-secret
       - name: root-ca
         configMap:
-          name: rabbitmq-dev-ca
+          name: rabbitmq-${ENV}-ca
           items:
             - key: ca.crt
               path: ca.crt
