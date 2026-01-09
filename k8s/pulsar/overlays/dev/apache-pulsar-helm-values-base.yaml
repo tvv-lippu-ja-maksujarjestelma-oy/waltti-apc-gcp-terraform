@@ -34,7 +34,7 @@ victoria-metrics-k8s-stack:
 
 # Disable monitoring scrapers (*.podMonitors)
 # Use private GCP components (*.service.annotations)
-# Use SSDs for persistence (*.volumes.data.storageClassName)
+# Use SSDs for persistence (*.volumes.*.storageClassName)
 # Modify requests for anti-affinity pods for GKE Autopilot General-purpose compute class (*.resources.requests)
 autorecovery:
   podMonitor:
@@ -57,7 +57,9 @@ bookkeeper:
     annotations:
       networking.gke.io/load-balancer-type: "Internal"
   volumes:
-    data:
+    journal:
+      storageClassName: premium-rwo
+    ledgers:
       storageClassName: premium-rwo
   affinity:
     anti_affinity: true # Documentative explicit default
