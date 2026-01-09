@@ -3,14 +3,16 @@
 # Development values #
 ######################
 
-# Disable persistence in volumes (use emptyDir)
+# Enable persistence to avoid LedgerNotExistException errors when bookies restart
+# Previously disabled (emptyDir) which caused data loss on bookie pod restarts
 volumes:
-  persistence: false
+  persistence: true
 
-# Disable persistence in broker (broker.configData.autoSkipNonRecoverableData)
+# Disable autoSkipNonRecoverableData now that we have persistent storage
+# This setting was a workaround for missing ledgers
 broker:
   configData:
-    autoSkipNonRecoverableData: "true"
+    autoSkipNonRecoverableData: "false"
 
 # In case you have to debug, you can enable toolset:
 # components:
