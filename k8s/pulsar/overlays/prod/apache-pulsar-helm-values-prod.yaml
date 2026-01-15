@@ -1,0 +1,14 @@
+---
+####################
+# Production values #
+####################
+
+# Enable persistence for production
+volumes:
+  persistence: true
+
+# Safer broker behavior for production (do not skip non-recoverable data)
+broker:
+  configData:
+    autoSkipNonRecoverableData: "false"
+
