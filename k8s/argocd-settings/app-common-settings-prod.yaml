@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: common-kubernetes-settings-prod
+  namespace: argocd
+  labels:
+    environment: prod
+    name: common-k8s-settings
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/common-settings/overlays/prod
+  destination:
+    server: https://34.185.149.50
+  syncPolicy: 
+    automated: {}
+
