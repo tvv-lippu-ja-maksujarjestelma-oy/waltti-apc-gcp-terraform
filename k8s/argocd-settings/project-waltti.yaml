@@ -10,6 +10,7 @@ spec:
     duration: 2h
     applications:
     - "*-qa"
+    - "*-prod"
     manualSync: true
   clusterResourceWhitelist:
   - group: '*'
@@ -21,6 +22,9 @@ spec:
   - name: '*'
     namespace: '*'
     server: https://34.159.35.141
+  - name: '*'
+    namespace: '*'
+    server: https://34.185.149.50
   namespaceResourceWhitelist:
   - group: '*'
     kind: '*'

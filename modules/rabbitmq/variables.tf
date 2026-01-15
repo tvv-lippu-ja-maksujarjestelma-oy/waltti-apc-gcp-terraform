@@ -8,3 +8,9 @@ variable "project_id" {
 
 variable "dns_service_account_id" {
 }
+
+variable "create_iam_binding" {
+  description = "Create IAM binding for cert-manager"
+  type        = bool
+  default     = true
+}

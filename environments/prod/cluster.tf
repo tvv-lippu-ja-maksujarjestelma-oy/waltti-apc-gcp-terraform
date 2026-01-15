@@ -5,5 +5,6 @@ module "cluster" {
   management_cidrs = var.management_cidrs
   project_id       = var.project_id
   cluster_name     = var.environment
-  k8s_version      = "1.27.3-gke.100"
+  k8s_version      = "1.31.13-gke.1123000"
+  dns_endpoint_enabled = true
 }

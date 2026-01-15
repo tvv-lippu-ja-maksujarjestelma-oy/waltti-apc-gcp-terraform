@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: anonymizer-prod
+  namespace: argocd
+  labels:
+    environment: prod
+    name: anonymizer
+  annotations:
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+    argocd-image-updater.argoproj.io/image-list: tvvlmj/waltti-apc-anonymizer:edge
+    argocd-image-updater.argoproj.io/update-strategy: digest
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/anonymizer/overlays/prod
+  destination:
+    server: https://34.185.149.50
+  syncPolicy:  
+    automated: 
+      prune: true
+      selfHeal: true
+

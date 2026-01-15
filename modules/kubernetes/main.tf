@@ -4,6 +4,8 @@ locals {
   cluster_ca_certificate = google_container_cluster.primary.master_auth.0.cluster_ca_certificate
 }
 
+data "google_project" "current" {}
+
 resource "google_service_account" "gke" {
   account_id   = "cluster-serviceaccount"
   display_name = "Service Account for GKE"
@@ -15,10 +17,41 @@ resource "google_project_iam_member" "gke_policy" {
   member  = "serviceAccount:${google_service_account.gke.email}"
 }
 
+resource "google_project_iam_member" "gke_log_writer" {
+  project = var.project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.gke.email}"
+}
+
+resource "google_project_iam_member" "gke_metric_writer" {
+  project = var.project_id
+  role    = "roles/monitoring.metricWriter"
+  member  = "serviceAccount:${google_service_account.gke.email}"
+}
+
+resource "google_project_iam_member" "gke_monitoring_viewer" {
+  project = var.project_id
+  role    = "roles/monitoring.viewer"
+  member  = "serviceAccount:${google_service_account.gke.email}"
+}
+
+resource "google_project_iam_member" "gke_stackdriver_writer" {
+  project = var.project_id
+  role    = "roles/stackdriver.resourceMetadata.writer"
+  member  = "serviceAccount:${google_service_account.gke.email}"
+}
+
+resource "google_service_account_iam_member" "gke_robot_sa_user" {
+  service_account_id = google_service_account.gke.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:service-${data.google_project.current.number}@container-engine-robot.iam.gserviceaccount.com"
+}
+
 resource "google_container_cluster" "primary" {
 
   name     = var.cluster_name
   location = var.region
+  deletion_protection = false
 
   enable_autopilot = true
   # GKE autopilot are by default in regular channel

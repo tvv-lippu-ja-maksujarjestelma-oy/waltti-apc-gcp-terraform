@@ -5,7 +5,7 @@ locals {
 # Create a sops+argocd kms key
 resource "google_kms_key_ring" "sops" {
   name     = "sops"
-  location = "global"
+  location = "europe-west3"
 }
 
 resource "google_kms_crypto_key" "sops" {
@@ -34,6 +34,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
     "google.subject"       = "assertion.sub"
     "attribute.repository" = "assertion.repository"
   }
+  attribute_condition = "assertion.repository == '${local.repo}'"
   oidc {
     issuer_uri = "https://token.actions.githubusercontent.com"
   }
