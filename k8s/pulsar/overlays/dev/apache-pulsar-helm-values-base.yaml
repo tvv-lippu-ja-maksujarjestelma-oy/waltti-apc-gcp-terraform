@@ -100,6 +100,15 @@ broker:
   resources:
     requests:
       cpu: 0.25 # TODO/DEBUG: autoadjust worked, 0.5 requireD?? Default: 0.2
+      memory: 768Mi
+    limits:
+      memory: 768Mi
+  configData:
+    # Reduce JVM heap+direct to fit within 768Mi limit with headroom for JVM overhead.
+    # Default is -Xms128m -Xmx256m -XX:MaxDirectMemorySize=256m (fits in 512Mi but
+    # OOMKills under load due to JVM overhead on top of heap+direct).
+    PULSAR_MEM: >
+      -Xms128m -Xmx256m -XX:MaxDirectMemorySize=128m
 proxy:
   podMonitor:
     enabled: false
