@@ -12,3 +12,17 @@ broker:
   configData:
     autoSkipNonRecoverableData: "false"
 
+# Bookie ledger PVC size: expanded from chart default 50Gi to 100Gi after disk-full
+# incident (2026-03-24). At 14-day retention, steady-state usage is ~20-25Gi per bookie.
+# Note: PVC size cannot be reduced once set; only increased.
+#
+# Namespace retention policy (set via pulsar-admin, stored in ZooKeeper - NOT managed here):
+#   apc-prod/source, deduplicated, anonymized, aggregated, cleaned: 14 days, unlimited size
+#   apc-prod/profiles: 100MB size limit
+# To update: kubectl exec -n pulsar pulsar-bookie-0 -- /pulsar/bin/pulsar-admin \
+#   --admin-url http://pulsar-broker:8080 namespaces set-retention <ns> --time 14d --size -1
+bookkeeper:
+  volumes:
+    ledgers:
+      size: 100Gi
+

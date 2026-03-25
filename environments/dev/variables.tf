@@ -27,3 +27,8 @@ variable "maintenance_end_time" {
 variable "maintenance_recurrence" {
   default = "FREQ=WEEKLY"
 }
+
+variable "pulsar_web_service_url" {
+  description = "Pulsar broker admin API URL. Defaults to internal LB. For local use: run kubectl proxy --port=8001 and set TF_VAR_pulsar_web_service_url=http://localhost:8001/api/v1/namespaces/pulsar/services/pulsar-broker-admin:8080/proxy"
+  default     = "http://10.0.0.62:8080"
+}

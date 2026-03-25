@@ -14,6 +14,14 @@ broker:
   configData:
     autoSkipNonRecoverableData: "false"
 
+# Bookie ledger PVC size: all 4 bookies expanded to 100Gi on 2026-03-25.
+# bookie-2 was at 95% disk usage; others expanded for consistency.
+# Note: retention set to 14 days via pulsar-admin (stored in ZooKeeper, not here).
+bookkeeper:
+  volumes:
+    ledgers:
+      size: 100Gi
+
 # In case you have to debug, you can enable toolset:
 # components:
 #   toolset: true
