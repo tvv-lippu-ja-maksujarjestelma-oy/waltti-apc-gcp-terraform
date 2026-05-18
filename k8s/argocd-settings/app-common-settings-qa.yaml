@@ -12,6 +12,6 @@ spec:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
     path: manifests/common-settings/overlays/staging
   destination:
-    server: https://kubernetes.default.svc
+    server: https://34.159.35.141
   syncPolicy: 
     automated: {}

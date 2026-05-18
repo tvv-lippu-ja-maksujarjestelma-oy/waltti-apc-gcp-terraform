@@ -30,6 +30,16 @@ module "gtfsrt_vp_poller_jyvaskyla" {
   project_id      = var.project_id
 }
 
+module "gtfsrt_vp_poller_lahti" {
+  source          = "../../modules/monitor-service"
+  service_id      = "gtfsrt-vp-poller-lahti"
+  controller_name = "gtfsrt-vp-poller-fi-lahti"
+  cluster_name    = "prototype"
+  environment     = "dev"
+  region          = var.region
+  project_id      = var.project_id
+}
+
 module "journey_matcher" {
   source          = "../../modules/monitor-service"
   service_id      = "journey-matcher"
@@ -42,8 +52,18 @@ module "journey_matcher" {
 
 module "vehicle-position-splitter" {
   source          = "../../modules/monitor-service"
-  service_id      = "vehicle-position-splitter"
-  controller_name = "vehicle-position-splitter"
+  service_id      = "vehicle-position-splitter-kuopio"
+  controller_name = "vehicle-position-splitter-fi-kuopio"
+  cluster_name    = "prototype"
+  environment     = "dev"
+  region          = var.region
+  project_id      = var.project_id
+}
+
+module "vehicle_position_splitter_lahti" {
+  source          = "../../modules/monitor-service"
+  service_id      = "vehicle-position-splitter-lahti"
+  controller_name = "vehicle-position-splitter-fi-lahti"
   cluster_name    = "prototype"
   environment     = "dev"
   region          = var.region
@@ -92,8 +112,18 @@ module "pulsar_mqtt_forwarder_rtpi" {
 
 module "vehicle_registry_monitor_kuopio" {
   source          = "../../modules/monitor-service"
-  service_id      = "vehicle-registy-kuopio"
-  controller_name = "vehicle-registy-poller-fi-kuopio"
+  service_id      = "vehicle-registry-kuopio"
+  controller_name = "vehicle-registry-poller-fi-kuopio"
+  cluster_name    = "prototype"
+  environment     = "dev"
+  region          = var.region
+  project_id      = var.project_id
+}
+
+module "vehicle_registry_monitor_lahti" {
+  source          = "../../modules/monitor-service"
+  service_id      = "vehicle-registry-lahti"
+  controller_name = "vehicle-registry-poller-fi-lahti"
   cluster_name    = "prototype"
   environment     = "dev"
   region          = var.region
