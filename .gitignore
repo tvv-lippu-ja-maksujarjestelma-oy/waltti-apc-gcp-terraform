@@ -40,3 +40,4 @@ terraform.rc
 
 # Ignore generated Helm chart directories (fetched at build time by kustomize)
 k8s/pulsar/**/charts/
+pulsar-provider-override.tf

@@ -1,22 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vehicle-anonymization-profiler-qa
+  name: vehicle-position-splitter-lahti-prod
   namespace: argocd
   labels:
-    environment: qa
-    name: vehicle-anonymization-profiler-qa
+    environment: prod
+    name: vehicle-position-splitter-lahti
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list: tvvlmj/waltti-apc-vehicle-anonymization-profiler:edge
+    argocd-image-updater.argoproj.io/image-list: tvvlmj/waltti-apc-vehicle-position-splitter:edge
     argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   project: waltti
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
-    path: manifests/vehicle-anonymization-profiler/overlays/staging
+    path: manifests/vehicle-position-splitter/lahti/overlays/prod
   destination:
-    server: https://34.159.35.141
+    server: https://34.185.149.50
   syncPolicy:  
     automated: 
       prune: true
+      selfHeal: true
