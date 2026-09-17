@@ -64,6 +64,20 @@ metadata:
     app.kubernetes.io/name: argocd-image-updater-config
     app.kubernetes.io/part-of: argocd-image-updater
   name: argocd-image-updater-config
+data:
+  # Docker Hub read-only Personal Access Token (user tvvlmj). The secret is
+  # created out of band, not committed:
+  #   kubectl -n argocd create secret docker-registry dockerhub-readonly \
+  #     --docker-server=https://registry-1.docker.io --docker-username=tvvlmj \
+  #     --docker-password=<READ-ONLY PAT>
+  registries.conf: |
+    registries:
+    - name: Docker Hub
+      api_url: https://registry-1.docker.io
+      prefix: docker.io
+      ping: yes
+      default: true
+      credentials: pullsecret:argocd/dockerhub-readonly
 ---
 apiVersion: v1
 kind: ConfigMap
