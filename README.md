@@ -12,7 +12,7 @@
 ## Kubernes setup
 
 k8s contains raw yaml files for installing:
-- ArgoCD
+- ArgoCD (`k8s/argocd` is a kustomization: pinned upstream install manifest + local patches; render with `kustomize build k8s/argocd`, apply with `kubectl apply --server-side -k k8s/argocd`)
 - RabbitMQ
 - Cert-Manager
 
