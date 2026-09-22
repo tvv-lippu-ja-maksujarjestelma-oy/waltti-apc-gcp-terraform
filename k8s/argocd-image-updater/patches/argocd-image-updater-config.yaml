@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-image-updater-config
+data:
+  # Docker Hub allows the tvvlmj account 200 manifest pulls per hour and CI
+  # shares that budget. ~40 image entries per cycle: 20m = 120/h.
+  interval: 20m
+  # Docker Hub read-only Personal Access Token (user tvvlmj). The secret is
+  # created out of band from Secret Manager
+  # (apc-sandbox/argocd-image-updater-dockerhub-token), not committed:
+  #   kubectl -n argocd create secret docker-registry dockerhub-readonly \
+  #     --docker-server=https://registry-1.docker.io --docker-username=tvvlmj \
+  #     --docker-password=<READ-ONLY PAT>
+  # --docker-server must equal the api_url host below.
+  registries.conf: |
+    registries:
+    - name: Docker Hub
+      api_url: https://registry-1.docker.io
+      prefix: docker.io
+      ping: yes
+      default: true
+      credentials: pullsecret:argocd/dockerhub-readonly

@@ -1,0 +1,11 @@
+# Image Updater 1.x is configured through this CR. Our per-Application
+# annotations (argocd-image-updater.argoproj.io/image-list etc. in
+# ../argocd-settings) keep working because useAnnotations is set.
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: waltti
+spec:
+  applicationRefs:
+    - namePattern: "*"
+      useAnnotations: true
