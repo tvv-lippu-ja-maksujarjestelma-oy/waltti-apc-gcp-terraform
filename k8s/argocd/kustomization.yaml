@@ -7,7 +7,7 @@ namespace: argocd
 # and re-verify the patches below.
 resources:
   - namespace.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.0.23/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.12/manifests/install.yaml
   - argocd-backend.yaml
   - argocd-frontend.yaml
   - argocd-service2.yaml
