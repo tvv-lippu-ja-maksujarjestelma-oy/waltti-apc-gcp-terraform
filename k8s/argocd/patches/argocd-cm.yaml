@@ -5,10 +5,10 @@ metadata:
 data:
   # Needed for the KSOPS exec plugin.
   kustomize.buildOptions: --enable-alpha-plugins --enable-exec
-  resource.exclusions: |
-    - apiGroups:
-      - cilium.io
-      kinds:
-      - CiliumIdentity
-      clusters:
-      - "*"
+  # Argo CD 3.0 switched the default to annotation-based tracking. Keep the
+  # v2 label tracking until we deliberately migrate: the first sync after the
+  # switch can prune resources that are still label-tracked.
+  # https://argo-cd.readthedocs.io/en/stable/operator-manual/upgrading/2.14-3.0/#use-annotation-based-tracking-by-default
+  application.resourceTrackingMethod: label
+  # resource.exclusions: upstream default (includes CiliumIdentity, which was
+  # the only entry of our former custom list).
