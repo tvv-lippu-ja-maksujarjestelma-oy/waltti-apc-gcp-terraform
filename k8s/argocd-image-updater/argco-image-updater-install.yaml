@@ -104,6 +104,9 @@ spec:
       - command:
         - /usr/local/bin/argocd-image-updater
         - run
+        # Docker Hub allows the tvvlmj account 200 manifest pulls per hour and
+        # CI shares that budget. ~40 image entries per cycle: 20m = 120/h.
+        - --interval=20m
         env:
         - name: APPLICATIONS_API
           valueFrom:
