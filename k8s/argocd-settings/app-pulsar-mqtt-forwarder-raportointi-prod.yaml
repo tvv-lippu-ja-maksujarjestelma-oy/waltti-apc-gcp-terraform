@@ -8,7 +8,7 @@ metadata:
     name: pulsar-mqtt-forwarder-raportointi
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list: tvvlmj/waltti-apc-pulsar-mqtt-forwarder:edge
+    argocd-image-updater.argoproj.io/image-list: tvvlmj/pulsar-mqtt-forwarder:edge
     argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   project: waltti

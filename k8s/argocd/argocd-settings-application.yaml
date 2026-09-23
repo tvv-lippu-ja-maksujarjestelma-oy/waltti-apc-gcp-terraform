@@ -1,0 +1,29 @@
+# App-of-apps: Argo CD manages the Application/AppProject/repo definitions in
+# k8s/argocd-settings from Git, so they cannot drift from what is committed.
+# Its name does not match the *-qa / *-prod sync windows on purpose: it only
+# edits Application objects; workload changes stay gated by those windows.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-settings
+  namespace: argocd
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-gcp-terraform.git
+    targetRevision: main
+    path: k8s/argocd-settings
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  # Argo Image Updater writes resolved digests into spec.source.kustomize.images
+  # of each Application (write-back-method: argocd). Leave that field alone.
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      jsonPointers:
+        - /spec/source/kustomize/images
+  syncPolicy:
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
