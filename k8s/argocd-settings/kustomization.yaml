@@ -1,0 +1,55 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Rendered by the argocd-settings Application (k8s/argocd/argocd-settings-application.yaml).
+# Add new Application files here; merging to main is the deployment.
+resources:
+  - app-anonymizer-dev.yaml
+  - app-anonymizer-prod.yaml
+  - app-anonymizer-qa.yaml
+  - app-common-settings-dev.yaml
+  - app-common-settings-prod.yaml
+  - app-common-settings-qa.yaml
+  - app-gtfsrt-vp-poller-fi-jyvaskyla-dev.yaml
+  - app-gtfsrt-vp-poller-fi-jyvaskyla-prod.yaml
+  - app-gtfsrt-vp-poller-fi-jyvaskyla-qa.yaml
+  - app-gtfsrt-vp-poller-fi-kuopio-dev.yaml
+  - app-gtfsrt-vp-poller-fi-kuopio-prod.yaml
+  - app-gtfsrt-vp-poller-fi-kuopio-qa.yaml
+  - app-gtfsrt-vp-poller-fi-lahti-dev.yaml
+  - app-gtfsrt-vp-poller-fi-lahti-prod.yaml
+  - app-gtfsrt-vp-poller-fi-lahti-qa.yaml
+  - app-journey-matcher-dev.yaml
+  - app-journey-matcher-prod.yaml
+  - app-journey-matcher-qa.yaml
+  - app-mqtt-deduplicator-dev.yaml
+  - app-mqtt-deduplicator-prod.yaml
+  - app-mqtt-deduplicator-qa.yaml
+  - app-mqtt-forwarder-dev.yaml
+  - app-mqtt-forwarder-prod.yaml
+  - app-mqtt-forwarder-qa.yaml
+  - app-pulsar-mqtt-forwarder-raportointi-dev.yaml
+  - app-pulsar-mqtt-forwarder-raportointi-prod.yaml
+  - app-pulsar-mqtt-forwarder-raportointi-qa.yaml
+  - app-pulsar-mqtt-forwarder-rtpi-dev.yaml
+  - app-pulsar-mqtt-forwarder-rtpi-prod.yaml
+  - app-pulsar-mqtt-forwarder-rtpi-qa.yaml
+  - app-vehicle-anonymization-profiler-dev.yaml
+  - app-vehicle-anonymization-profiler-prod.yaml
+  - app-vehicle-anonymization-profiler-qa.yaml
+  - app-vehicle-position-splitter-jyvaskyla-prod.yaml
+  - app-vehicle-position-splitter-jyvaskyla-qa.yaml
+  - app-vehicle-position-splitter-kuopio-dev.yaml
+  - app-vehicle-position-splitter-kuopio-prod.yaml
+  - app-vehicle-position-splitter-kuopio-qa.yaml
+  - app-vehicle-position-splitter-lahti-dev.yaml
+  - app-vehicle-position-splitter-lahti-prod.yaml
+  - app-vehicle-position-splitter-lahti-qa.yaml
+  - app-vehicle-registry-poller-fi-jyvaskyla-prod.yaml
+  - app-vehicle-registry-poller-fi-kuopio-dev.yaml
+  - app-vehicle-registry-poller-fi-kuopio-prod.yaml
+  - app-vehicle-registry-poller-fi-kuopio-qa.yaml
+  - app-vehicle-registry-poller-fi-lahti-dev.yaml
+  - app-vehicle-registry-poller-fi-lahti-prod.yaml
+  - app-vehicle-registry-poller-fi-lahti-qa.yaml
+  - project-waltti.yaml
+  - waltti-apc-deployment-repo.yaml

@@ -12,6 +12,10 @@ spec:
     - "*-qa"
     - "*-prod"
     manualSync: true
+  sourceRepos:
+    - https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    # This repo: the argocd-settings Application (k8s/argocd) renders this directory.
+    - https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-gcp-terraform.git
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'

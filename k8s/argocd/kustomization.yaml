@@ -13,6 +13,7 @@ resources:
   - argocd-service2.yaml
   - argocd-ingress.yaml
   - argocd-cert.yaml
+  - argocd-settings-application.yaml
 
 patches:
   # KSOPS + kustomize binaries for the repo-server (GCP KMS via Workload Identity).
