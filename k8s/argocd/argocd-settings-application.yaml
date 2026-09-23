@@ -24,6 +24,9 @@ spec:
       jsonPointers:
         - /spec/source/kustomize/images
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
     syncOptions:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
