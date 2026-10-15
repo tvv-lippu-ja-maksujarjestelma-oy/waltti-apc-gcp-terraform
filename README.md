@@ -26,6 +26,19 @@ kubectl annotate serviceaccount --namespace=cert-manager cert-manager \
     "iam.gke.io/gcp-service-account=cert-manager-dns@apc-sandbox.iam.gserviceaccount.com"
 ```
 
+The dev resource settings are in `k8s/cert-manager-dev`. They request
+100m CPU and 256Mi memory per container while retaining 500m CPU and 2Gi memory
+limits. For an existing dev installation, update only the three deployments:
+
+```shell
+kubectl --context=gke_apc-sandbox_europe-west3_prototype -n cert-manager set resources \
+  deployment/cert-manager deployment/cert-manager-cainjector deployment/cert-manager-webhook \
+  --requests=cpu=100m,memory=256Mi
+```
+
+Monitor each deployment rollout and verify certificate issuance after resizing.
+The base manifest retains the existing settings for staging and production.
+
 ### RabbitMQ
 
 More information at [RABBITMQ.MD](./RABBITMQ.MD)
