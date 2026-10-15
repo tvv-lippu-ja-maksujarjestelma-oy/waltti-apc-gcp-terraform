@@ -53,6 +53,12 @@ def collect_environment(env):
  tenant={'dev':'apc-sandbox','staging':'apc-staging','prod':'apc-prod'}[env]
  result['topics']=kubectl(env,['-n','pulsar','exec','pulsar-broker-0','-c','pulsar-broker','--','python3','-c',PULSAR.replace('TENANT',tenant)],timeout=180)
  if not result['topics']:result['errors'].append('No Pulsar topic statistics')
+ result['bookkeeper']=kubectl(env,['-n','pulsar','exec','pulsar-bookie-0','-c','pulsar-bookie','--','python3','-c',"import urllib.request,json; base='http://localhost:8000/api/v1/'; get=lambda p:json.load(urllib.request.urlopen(base+p,timeout=15)); print(json.dumps({'cluster':get('bookie/cluster_info'),'underreplicated_ledgers':get('autorecovery/list_under_replicated_ledger/')}))"])
+ cluster=result['bookkeeper']['cluster']
+ if cluster.get('writableBookiesCount')!=4 or cluster.get('readonlyBookiesCount') or cluster.get('unavailableBookiesCount') or not cluster.get('auditorElected') or not cluster.get('ledgerReplicationEnabled'):result['errors'].append('BookKeeper replication/writability unhealthy')
+ known=json.loads((ROOT/'known-underreplication.json').read_text()) if (ROOT/'known-underreplication.json').exists() else {}
+ unexpected=set(result['bookkeeper']['underreplicated_ledgers'])-set(known.get(env,[]))
+ if unexpected:result['errors'].append('New underreplicated ledgers: '+str(sorted(unexpected)[:20]))
  return result
 
 def sample():

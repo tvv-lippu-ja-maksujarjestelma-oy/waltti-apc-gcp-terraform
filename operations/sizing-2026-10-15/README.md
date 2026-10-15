@@ -36,3 +36,10 @@ the immutable healthy baseline; do this only after rollouts and batch checks pas
 Self-signed certificate smoke tests exercise issuance/admission but do not exercise
 external ACME DNS challenges. Pulsar init smoke tests run read-only cluster-ID
 queries at the new CPU request before rolling StatefulSets.
+
+Dev has three pre-existing irrecoverable ledgers (150, 151, 153), confirmed in
+Cloud Logging entries before the resize began. `known-underreplication.json`
+records that exact exception; every new under-replicated ledger blocks promotion.
+Staging and production have no allowed under-replication exceptions. Every sample
+also requires four writable bookies, an elected auditor and enabled replication.
+No ledger or persistent data is deleted by this campaign.

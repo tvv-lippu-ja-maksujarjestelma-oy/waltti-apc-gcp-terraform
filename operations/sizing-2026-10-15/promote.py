@@ -79,6 +79,7 @@ def main():
  (ROOT/'production-attempt.json').write_text(json.dumps({'started':time.time()}))
  changed=[];paused=[];root_app=None;started=time.time()
  try:
+  run(['python3',str(ROOT/'pulsar_init_smoke.py'),observe.CONTEXTS['prod'],'prod-before'],timeout=400)
   # Pause the parent first so it cannot re-enable child auto-sync during rollout.
   root_app=observe.kubectl('dev',['-n','argocd','get','applications.argoproj.io','argocd-settings','-o','json'])
   if root_app.get('operation'):raise RuntimeError('Parent Argo reconciliation is in flight')
