@@ -14,6 +14,6 @@ resource "google_storage_bucket" "gcp-tf-state" {
 resource "google_logging_project_bucket_config" "default_logging_bucket" {
   project        = var.project_id
   location       = "global"
-  retention_days = 90
+  retention_days = 30
   bucket_id      = "_Default"
 }
