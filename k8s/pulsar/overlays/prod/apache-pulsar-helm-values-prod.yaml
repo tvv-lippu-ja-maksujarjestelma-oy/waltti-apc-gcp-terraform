@@ -26,3 +26,12 @@ bookkeeper:
     ledgers:
       size: 100Gi
 
+
+# Promote only after the dev/staging 24-hour observation passes.
+initContainer:
+  resources:
+    requests:
+      cpu: 0.5
+      memory: 256Mi
+    limits:
+      cpu: 1
