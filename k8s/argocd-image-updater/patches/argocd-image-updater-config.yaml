@@ -13,6 +13,22 @@ data:
   #     --docker-server=https://registry-1.docker.io --docker-username=tvvlmj \
   #     --docker-password=<READ-ONLY PAT>
   # --docker-server must equal the api_url host below.
+  # Git write-back (step 5 of the GitOps plan): commits are made by the GitHub App
+  # waltti-image-updater. Its credentials live in secret argocd/github-app-image-updater
+  # (keys githubAppID, githubAppInstallationID, githubAppPrivateKey), created out of band
+  # from Secret Manager apc-sandbox/argocd-image-updater-github-app-key:
+  #   kubectl -n argocd create secret generic github-app-image-updater \
+  #     --from-literal=githubAppID=<id> --from-literal=githubAppInstallationID=<id> \
+  #     --from-file=githubAppPrivateKey=<key.pem>
+  git.user: waltti-image-updater[bot]
+  git.email: waltti-image-updater[bot]@users.noreply.github.com
+  git.commit-message-template: |
+    build: update image {{ range .AppChanges }}{{ .Image }}{{ end }} in {{ .AppName }}
+
+    {{ range .AppChanges -}}
+    {{ .Image }}: {{ .OldTag }} -> {{ .NewTag }}
+    {{ end -}}
+    Opened automatically by argocd-image-updater from the edge tag.
   registries.conf: |
     registries:
     - name: Docker Hub
