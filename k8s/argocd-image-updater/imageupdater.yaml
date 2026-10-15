@@ -1,11 +1,30 @@
-# Image Updater 1.x is configured through this CR. Our per-Application
-# annotations (argocd-image-updater.argoproj.io/image-list etc. in
-# ../argocd-settings) keep working because useAnnotations is set.
+# Image Updater 1.x is configured through this CR.
+#
+# Rules are matched most-specific namePattern first.
+#  - Git write-back (digest written to the Kustomize overlay in waltti-apc-deployment
+#    via a pull request opened by the GitHub App). Being rolled out per application;
+#    annotations cannot express pull requests, so these rules are CR-based.
+#  - Everything else: legacy annotation mode (argocd-image-updater.argoproj.io/* in
+#    ../argocd-settings), digest written into the live Application (write-back-method: argocd).
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
   name: waltti
 spec:
   applicationRefs:
+    - namePattern: anonymizer-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: anonymizer
+          imageName: tvvlmj/waltti-apc-anonymizer:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          # The Application source path is the overlay; its kustomization.yaml gets the images entry.
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
     - namePattern: "*"
       useAnnotations: true
