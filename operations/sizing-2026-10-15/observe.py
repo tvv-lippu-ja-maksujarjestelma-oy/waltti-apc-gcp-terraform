@@ -22,7 +22,7 @@ def kubectl(env,args,timeout=90):
  if r.returncode: raise RuntimeError(r.stderr[-2000:])
  return json.loads(r.stdout)
 def collect_environment(env):
- namespaces={env,'pulsar','cert-manager'} | ({'argocd'} if env=='dev' else set())
+ namespaces={env,'pulsar','cert-manager'} | ({'argocd','staging'} if env=='dev' else set())
  result={'errors':[], 'workloads':{}, 'pods':{}, 'metrics':{}, 'certificates':{}, 'topics':{}}
  for resource in ['deployments','statefulsets','pods','jobs','certificates.cert-manager.io']:
   for o in kubectl(env,['get',resource,'-A','-o','json'])['items']:
@@ -53,7 +53,17 @@ def collect_environment(env):
  tenant={'dev':'apc-sandbox','staging':'apc-staging','prod':'apc-prod'}[env]
  result['topics']=kubectl(env,['-n','pulsar','exec','pulsar-broker-0','-c','pulsar-broker','--','python3','-c',PULSAR.replace('TENANT',tenant)],timeout=180)
  if not result['topics']:result['errors'].append('No Pulsar topic statistics')
- result['bookkeeper']=kubectl(env,['-n','pulsar','exec','pulsar-bookie-0','-c','pulsar-bookie','--','python3','-c',"import urllib.request,json; base='http://localhost:8000/api/v1/'; get=lambda p:json.load(urllib.request.urlopen(base+p,timeout=15)); print(json.dumps({'cluster':get('bookie/cluster_info'),'underreplicated_ledgers':get('autorecovery/list_under_replicated_ledger/')}))"])
+ expected=['source/mqtt-apc-from-vehicle','deduplicated/mqtt-apc-from-vehicle-deduplicated','aggregated/aggregated-apc-journey','anonymized/anonymized-apc-journey']
+ expected += ['source/'+prefix+'-fi-'+city for prefix in ['gtfsrt-vp','splitted-gtfsrt-vp'] for city in ['jyvaskyla','kuopio','lahti']]
+ for name in expected:
+  topic='persistent://'+tenant+'/'+name;stats=result['topics'].get(topic)
+  if not stats:result['errors'].append('Missing core topic: '+name)
+  elif not any(sub['consumers']>0 for sub in stats['subscriptions'].values()):result['errors'].append('No connected core topic consumer: '+name)
+ for name,subs in {'aggregated/aggregated-apc-journey':['anonymizer-apc-sub','pulsar-mqtt-forwarder-raportointi'],'anonymized/anonymized-apc-journey':['pulsar-mqtt-forwarder-rtpi']}.items():
+  stats=result['topics'].get('persistent://'+tenant+'/'+name,{})
+  for sub in subs:
+   if not stats.get('subscriptions',{}).get(sub,{}).get('consumers',0):result['errors'].append('Missing critical consumer: '+sub)
+ result['bookkeeper']=kubectl(env,['-n','pulsar','exec','pulsar-bookie-0','-c','pulsar-bookie','--','python3','-c',"import urllib.request,json; base='http://localhost:8000/api/v1/'; get=lambda p:json.load(urllib.request.urlopen(base+p,timeout=15)); cluster=get('bookie/cluster_info'); print(json.dumps({'cluster':cluster,'underreplicated_ledgers':get('autorecovery/list_under_replicated_ledger/') if cluster['clusterUnderReplicated'] else []}))"])
  cluster=result['bookkeeper']['cluster']
  if cluster.get('writableBookiesCount')!=4 or cluster.get('readonlyBookiesCount') or cluster.get('unavailableBookiesCount') or not cluster.get('auditorElected') or not cluster.get('ledgerReplicationEnabled'):result['errors'].append('BookKeeper replication/writability unhealthy')
  known=json.loads((ROOT/'known-underreplication.json').read_text()) if (ROOT/'known-underreplication.json').exists() else {}
