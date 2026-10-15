@@ -88,7 +88,8 @@ def main():
   for app in apps:
    name=app['metadata']['name'];observe.kubectl('dev',['-n','argocd','patch','application.argoproj.io',name,'--type=merge','-p',json.dumps({'spec':{'syncPolicy':{'automated':None}}}),'-o','json']);paused.append(app)
   for pr in config['pull_requests']:
-   run(['gh','pr','ready',pr['url']]);run(['gh','pr','merge',pr['url'],'--'+pr['method'],'--match-head-commit',pr['head']])
+   if json.loads(run(['gh','pr','view',pr['url'],'--json','isDraft']))['isDraft']:run(['gh','pr','ready',pr['url']])
+   run(['gh','pr','merge',pr['url'],'--'+pr['method'],'--match-head-commit',pr['head']])
   for p in plan:
    key=p['namespace']+'/'+p['name'];changed.append(p)
    print('PRODUCTION RESIZE',key,flush=True)
