@@ -135,6 +135,9 @@ spec:
       useAnnotations: false
       commonUpdateSettings:
         updateStrategy: digest
+        # CronJob: between runs no container is running, so Argo's status.summary.images
+        # is empty and Image Updater would skip the image. forceUpdate treats it as live.
+        forceUpdate: true
       images:
         - alias: waltti-apc-vehicle-anonymization-profiler
           imageName: tvvlmj/waltti-apc-vehicle-anonymization-profiler:edge
