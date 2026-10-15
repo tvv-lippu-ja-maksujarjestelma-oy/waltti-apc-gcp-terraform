@@ -25,3 +25,13 @@ bookkeeper:
 # In case you have to debug, you can enable toolset:
 # components:
 #   toolset: true
+
+# Init requests affect the bill for the entire pod lifetime. Keep startup burst
+# capacity; the 15-second BookKeeper check is tested before each rollout.
+initContainer:
+  resources:
+    requests:
+      cpu: 0.5
+      memory: 256Mi
+    limits:
+      cpu: 1

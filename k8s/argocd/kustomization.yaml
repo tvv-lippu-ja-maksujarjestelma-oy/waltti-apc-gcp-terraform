@@ -23,3 +23,11 @@ patches:
   # Runtime settings that so far lived only in the live cluster.
   - path: patches/argocd-cm.yaml
   - path: patches/argocd-cmd-params-cm.yaml
+  # Requests sized from the largest single-container usage over 30 days.
+  - path: patches/resources-argocd-application-controller.yaml
+  - path: patches/resources-argocd-repo-server.yaml
+  - path: patches/resources-argocd-server.yaml
+  - path: patches/resources-argocd-dex-server.yaml
+  - path: patches/resources-argocd-redis.yaml
+  - path: patches/resources-argocd-applicationset-controller.yaml
+  - path: patches/resources-argocd-notifications-controller.yaml
