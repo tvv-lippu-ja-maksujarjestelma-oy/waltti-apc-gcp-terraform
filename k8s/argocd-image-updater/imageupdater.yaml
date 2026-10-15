@@ -1,11 +1,13 @@
 # Image Updater 1.x is configured through this CR.
 #
 # Rules are matched most-specific namePattern first.
-#  - Git write-back (digest written to the Kustomize overlay in waltti-apc-deployment
-#    via a pull request opened by the GitHub App). Being rolled out per application;
-#    annotations cannot express pull requests, so these rules are CR-based.
-#  - Everything else: legacy annotation mode (argocd-image-updater.argoproj.io/* in
-#    ../argocd-settings), digest written into the live Application (write-back-method: argocd).
+#  - dev applications: Git write-back. The resolved digest is written to the overlay's
+#    kustomization.yaml in waltti-apc-deployment via a pull request opened by the GitHub
+#    App waltti-image-updater (credentials: secret argocd/github-app-image-updater).
+#    Annotations cannot express pull requests, so these rules are CR-based.
+#  - everything else (qa, prod): legacy annotation mode (argocd-image-updater.argoproj.io/*
+#    in ../argocd-settings), digest written into the live Application (write-back-method: argocd)
+#    until step 6 of the GitOps plan moves them to reviewed promotion PRs.
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
@@ -17,12 +19,180 @@ spec:
       commonUpdateSettings:
         updateStrategy: digest
       images:
-        - alias: anonymizer
+        - alias: waltti-apc-anonymizer
           imageName: tvvlmj/waltti-apc-anonymizer:edge
       writeBackConfig:
         method: git:secret:argocd/github-app-image-updater
         gitConfig:
-          # The Application source path is the overlay; its kustomization.yaml gets the images entry.
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: gtfsrt-vp-poller-fi-jyvaskyla-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: http-pulsar-poller
+          imageName: tvvlmj/http-pulsar-poller:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: gtfsrt-vp-poller-fi-kuopio-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: http-pulsar-poller
+          imageName: tvvlmj/http-pulsar-poller:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: gtfsrt-vp-poller-fi-lahti-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: http-pulsar-poller
+          imageName: tvvlmj/http-pulsar-poller:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: journey-matcher-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: waltti-apc-journey-matcher
+          imageName: tvvlmj/waltti-apc-journey-matcher:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: mqtt-deduplicator-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: pulsar-topic-deduplicator
+          imageName: tvvlmj/pulsar-topic-deduplicator:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: mqtt-pulsar-forwarder-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: mqtt-pulsar-forwarder
+          imageName: tvvlmj/mqtt-pulsar-forwarder:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: pulsar-mqtt-forwarder-raportointi-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: pulsar-mqtt-forwarder
+          imageName: tvvlmj/pulsar-mqtt-forwarder:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: pulsar-mqtt-forwarder-rtpi-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: pulsar-mqtt-forwarder
+          imageName: tvvlmj/pulsar-mqtt-forwarder:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: vehicle-anonymization-profiler-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: waltti-apc-vehicle-anonymization-profiler
+          imageName: tvvlmj/waltti-apc-vehicle-anonymization-profiler:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: vehicle-position-splitter-kuopio-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: waltti-apc-vehicle-position-splitter
+          imageName: tvvlmj/waltti-apc-vehicle-position-splitter:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: vehicle-position-splitter-lahti-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: waltti-apc-vehicle-position-splitter
+          imageName: tvvlmj/waltti-apc-vehicle-position-splitter:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: vehicle-registry-poller-fi-kuopio-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: http-pulsar-poller
+          imageName: tvvlmj/http-pulsar-poller:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: vehicle-registry-poller-fi-lahti-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: http-pulsar-poller
+          imageName: tvvlmj/http-pulsar-poller:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
           writeBackTarget: kustomization
           pullRequest:
             github: {}

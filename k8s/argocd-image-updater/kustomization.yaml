@@ -10,3 +10,4 @@ resources:
 
 patches:
   - path: patches/argocd-image-updater-config.yaml
+  - path: patches/controller-git-commit-method.yaml
