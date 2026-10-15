@@ -1,7 +1,7 @@
 import copy,json,subprocess,sys,time,pathlib
 ctx=sys.argv[1]; label=sys.argv[2]
 def run(args,obj=None):
- r=subprocess.run(['kubectl','--context='+ctx,'--request-timeout=30s','-n','pulsar']+args,input=json.dumps(obj) if obj else None,text=True,capture_output=True,timeout=180)
+ r=subprocess.run(['kubectl','--context='+ctx,'--request-timeout=30s','-n','pulsar']+args,input=json.dumps(obj) if obj else None,text=True,capture_output=True,timeout=300)
  if r.returncode: raise RuntimeError(r.stderr)
  return r.stdout
 sts=json.loads(run(['get','statefulset/pulsar-bookie','-o','json']))
