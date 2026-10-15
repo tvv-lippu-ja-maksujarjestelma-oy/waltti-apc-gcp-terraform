@@ -1,0 +1,744 @@
+[
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "StatefulSet",
+    "namespace": "argocd",
+    "name": "argocd-application-controller",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "argocd-application-controller",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "1536Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "argocd",
+    "name": "argocd-notifications-controller",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "argocd-notifications-controller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "argocd",
+    "name": "argocd-repo-server",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "argocd-repo-server",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "768Mi"
+                  }
+                }
+              }
+            ],
+            "initContainers": [
+              {
+                "name": "copyutil",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "768Mi"
+                  }
+                }
+              },
+              {
+                "name": "install-ksops",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "768Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "argocd",
+    "name": "argocd-dex-server",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "dex",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "initContainers": [
+              {
+                "name": "copyutil",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "argocd",
+    "name": "argocd-applicationset-controller",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "argocd-applicationset-controller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "argocd",
+    "name": "argocd-redis",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "redis",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "initContainers": [
+              {
+                "name": "secret-init",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "argocd",
+    "name": "argocd-server",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "argocd-server",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "Deployment",
+    "namespace": "cert-manager",
+    "name": "cert-manager",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "cert-manager-controller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "Deployment",
+    "namespace": "cert-manager",
+    "name": "cert-manager-cainjector",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "cert-manager-cainjector",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "Deployment",
+    "namespace": "cert-manager",
+    "name": "cert-manager-webhook",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "cert-manager-webhook",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "dev",
+    "name": "vehicle-registry-poller-fi-jyvaskyla",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "vehicle-registry-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "dev",
+    "name": "vehicle-position-splitter-fi-jyvaskyla",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "vehicle-position-splitter",
+                "resources": {
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "CronJob",
+    "namespace": "dev",
+    "name": "registry-poller-refresher",
+    "patch": {
+      "spec": {
+        "jobTemplate": {
+          "spec": {
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kubectl",
+                    "resources": {
+                      "requests": {
+                        "cpu": "50m",
+                        "memory": "256Mi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "CronJob",
+    "namespace": "dev",
+    "name": "vehicle-anonymization-profiler",
+    "patch": {
+      "spec": {
+        "jobTemplate": {
+          "spec": {
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "name": "vehicle-anonymization-profiler",
+                    "resources": {
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "Deployment",
+    "namespace": "staging",
+    "name": "vehicle-registry-poller-fi-jyvaskyla",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "vehicle-registry-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "CronJob",
+    "namespace": "staging",
+    "name": "registry-poller-refresher",
+    "patch": {
+      "spec": {
+        "jobTemplate": {
+          "spec": {
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kubectl",
+                    "resources": {
+                      "requests": {
+                        "cpu": "50m",
+                        "memory": "256Mi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "CronJob",
+    "namespace": "staging",
+    "name": "vehicle-anonymization-profiler",
+    "patch": {
+      "spec": {
+        "jobTemplate": {
+          "spec": {
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "name": "vehicle-anonymization-profiler",
+                    "resources": {
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "dev",
+    "name": "mqtt-mqtt-duplicator-prod-to-dev-mqtt-mqtt-duplicator",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "mqtt-mqtt-duplicator",
+                "resources": {
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "Deployment",
+    "namespace": "dev",
+    "name": "mqtt-mqtt-duplicator-prod-to-staging-mqtt-mqtt-duplicator",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "mqtt-mqtt-duplicator",
+                "resources": {
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-recovery",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "pulsar-bookkeeper-verify-clusterid",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-bookie",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "pulsar-bookkeeper-verify-clusterid",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-broker",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "wait-zookeeper-ready",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              },
+              {
+                "name": "wait-bookkeeper-ready",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-recovery",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "pulsar-bookkeeper-verify-clusterid",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-bookie",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "pulsar-bookkeeper-verify-clusterid",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "staging",
+    "context": "gke_apc-staging-388907_europe-west3_staging",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-broker",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "wait-zookeeper-ready",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              },
+              {
+                "name": "wait-bookkeeper-ready",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  },
+                  "limits": {
+                    "cpu": "1"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+]
