@@ -30,13 +30,15 @@ def collect_environment(env):
    if ns not in namespaces: continue
    if resource in ['deployments','statefulsets']:
     desired=o['spec'].get('replicas',1);ready=o.get('status',{}).get('readyReplicas',0)
-    result['workloads'][key]={'ready':ready,'desired':desired,'generation':o['metadata']['generation'],'observed':o.get('status',{}).get('observedGeneration',0),'images':{c['name']:c['image'] for c in o['spec']['template']['spec']['containers']}}
+    result['workloads'][key]={'ready':ready,'desired':desired,'generation':o['metadata']['generation'],'observed':o.get('status',{}).get('observedGeneration',0),'images':{c['name']:c['image'] for c in o['spec']['template']['spec']['containers']},'resources':{c['name']:c.get('resources',{}) for c in o['spec']['template']['spec']['containers']}}
     if ready!=desired or result['workloads'][key]['observed']<o['metadata']['generation']:result['errors'].append(key+': workload not ready')
    elif resource=='pods':
     statuses=o.get('status',{}).get('containerStatuses',[])+o.get('status',{}).get('initContainerStatuses',[])
     phase=o.get('status',{}).get('phase','Unknown')
     result['pods'][o['metadata']['uid']]={'name':key,'phase':phase,'restarts':sum(c.get('restartCount',0) for c in statuses),'oom':any(c.get('lastState',{}).get('terminated',{}).get('reason')=='OOMKilled' or c.get('state',{}).get('terminated',{}).get('reason')=='OOMKilled' for c in statuses)}
-    if phase not in ['Succeeded','Failed'] and not o['metadata'].get('deletionTimestamp') and not any(c['type']=='Ready' and c['status']=='True' for c in o.get('status',{}).get('conditions',[])):result['errors'].append(key+': pod not ready')
+    is_job=any(owner.get('kind')=='Job' for owner in o['metadata'].get('ownerReferences',[]))
+    if is_job and phase=='Pending' and time.time()-datetime.datetime.fromisoformat(o['metadata']['creationTimestamp'].replace('Z','+00:00')).timestamp()>300:result['errors'].append(key+': batch pod pending over 5 minutes')
+    if not is_job and phase not in ['Succeeded','Failed'] and not o['metadata'].get('deletionTimestamp') and not any(c['type']=='Ready' and c['status']=='True' for c in o.get('status',{}).get('conditions',[])):result['errors'].append(key+': pod not ready')
    elif resource=='jobs':
     if o.get('status',{}).get('failed',0) and any(c['type']=='Failed' and c['status']=='True' for c in o.get('status',{}).get('conditions',[])):
      result.setdefault('failed_jobs',{})[key]=o['metadata']['creationTimestamp']

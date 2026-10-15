@@ -26,6 +26,8 @@ def approved_pr(pr,current):
 
 def preflight(config,plan):
  objects={};errors=[]
+ for repo,head in config.get('default_branch_heads',{}).items():
+  if run(['gh','api','repos/'+repo+'/git/ref/heads/main','--jq','.object.sha']).strip()!=head:errors.append('Default branch changed since review: '+repo)
  for pr in config['pull_requests']:
   try:approved_pr(pr,json.loads(run(['gh','pr','view',pr['url'],'--json','headRefOid,state,mergeable,statusCheckRollup'])))
   except Exception as exc:errors.append(str(exc))
@@ -75,8 +77,12 @@ def main():
  if errors:
   (ROOT/'production-result.json').write_text(json.dumps({'status':'BLOCKED','reason':errors,'at':report['at']},indent=2));return
  (ROOT/'production-attempt.json').write_text(json.dumps({'started':time.time()}))
- changed=[];paused=[];started=time.time()
+ changed=[];paused=[];root_app=None;started=time.time()
  try:
+  # Pause the parent first so it cannot re-enable child auto-sync during rollout.
+  root_app=observe.kubectl('dev',['-n','argocd','get','applications.argoproj.io','argocd-settings','-o','json'])
+  if root_app.get('operation'):raise RuntimeError('Parent Argo reconciliation is in flight')
+  observe.kubectl('dev',['-n','argocd','patch','applications.argoproj.io','argocd-settings','--type=merge','-p',json.dumps({'spec':{'syncPolicy':{'automated':None}}}),'-o','json'])
   # Disable automated reconciliation during controlled rollouts; do not sync full applications.
   for app in apps:
    name=app['metadata']['name'];observe.kubectl('dev',['-n','argocd','patch','application.argoproj.io',name,'--type=merge','-p',json.dumps({'spec':{'syncPolicy':{'automated':None}}}),'-o','json']);paused.append(app)
@@ -93,7 +99,11 @@ def main():
    if checks:raise RuntimeError(str(checks))
   run(['python3',str(ROOT/'certificate_smoke.py'),'prod-after',observe.CONTEXTS['prod'],'prod'],timeout=300)
   for app in paused:
+   current_app=observe.kubectl('dev',['-n','argocd','get','applications.argoproj.io',app['metadata']['name'],'-o','json'])
+   if current_app['spec']['source']!=app['spec']['source']:raise RuntimeError('Application source changed during sizing: '+app['metadata']['name'])
+  for app in paused:
    observe.kubectl('dev',['-n','argocd','patch','application.argoproj.io',app['metadata']['name'],'--type=merge','-p',json.dumps({'spec':{'syncPolicy':app['spec']['syncPolicy']}}),'-o','json'])
+  observe.kubectl('dev',['-n','argocd','patch','applications.argoproj.io','argocd-settings','--type=merge','-p',json.dumps({'spec':{'syncPolicy':root_app['spec']['syncPolicy']}}),'-o','json'])
   result={'status':'SUCCEEDED','at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'targets':len(changed)}
  except Exception as exc:
   failures=[]
@@ -102,6 +112,6 @@ def main():
     run(command(p,['patch',p['kind'],p['name'],'--type=strategic','-p',json.dumps(rollback_patch(p,before[p['namespace']+'/'+p['name']]))]))
     if p['kind']!='CronJob':run(command(p,['rollout','status',p['kind']+'/'+p['name'],'--timeout=900s']),timeout=940)
    except Exception as rollback_error:failures.append(str(rollback_error))
-  result={'status':'FAILED','error':str(exc),'rollback_errors':failures,'argo_apps_left_without_automated_sync':[a['metadata']['name'] for a in paused],'reason':'Resource requests rolled back; reconcile merged source before restoring automated sync.'}
+  result={'status':'FAILED','error':str(exc),'rollback_errors':failures,'argo_apps_left_without_automated_sync':[a['metadata']['name'] for a in paused]+(['argocd-settings'] if root_app else []),'reason':'Resource requests rolled back; reconcile merged source before restoring automated sync.'}
  (ROOT/'production-result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result),flush=True)
 if __name__=='__main__':main()

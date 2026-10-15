@@ -20,10 +20,10 @@ The local launchd entry point is `tick.py`; it stops after a terminal outcome.
 It does not post Slack or email messages.
 
 Production promotion checks frozen PR heads, CI status, unchanged production
-images, healthy/synced Argo applications, readiness and inactive GKE operations.
+images, unchanged default branches, healthy/synced Argo applications, readiness and inactive GKE operations.
 Existing Argo drift blocks the entire promotion, requiring review rather than
 silently deploying another image. Before merging the approved PRs it temporarily
-disables automated sync on affected applications and applies only resource fields,
+disables automated sync on the parent and affected applications and applies only resource fields,
 sequentially. Every rollout must finish and pass health checks. On failure it
 restores prior resource fields and leaves automated sync disabled until merged
 source is reconciled. An interrupted attempt is never retried automatically.
