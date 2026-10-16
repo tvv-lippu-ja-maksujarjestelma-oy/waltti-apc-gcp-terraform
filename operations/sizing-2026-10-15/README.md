@@ -61,3 +61,7 @@ Pulsar rolls one ordinal at a time using a temporary StatefulSet partition,
 checking writable bookies, replication and message flow before moving on. The
 original update strategy is restored afterwards. Image digests are verified, and
 15 minutes of health observation precedes restoration of automatic Argo sync.
+
+Production startup checks passed three times at 500m CPU request with the existing
+uncapped CPU bursting (4.7–5.1 seconds). A proposed 1-CPU cap timed out at 15 seconds
+and was rejected before any workload changes. Production init limits stay unchanged.

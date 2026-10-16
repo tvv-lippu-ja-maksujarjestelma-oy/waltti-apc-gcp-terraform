@@ -5,7 +5,7 @@ def run(args,obj=None):
  if r.returncode: raise RuntimeError(r.stderr)
  return r.stdout
 sts=json.loads(run(['get','statefulset/pulsar-bookie','-o','json']))
-c=copy.deepcopy(sts['spec']['template']['spec']['initContainers'][0]); c['name']='verify-clusterid'; c['command']=['sh','-c']; c['args']=['set -e; bin/apply-config-from-env.py conf/bookkeeper.conf; export BOOKIE_MEM="-Xmx128M"; for i in 1 2 3; do time timeout 15 bin/bookkeeper shell whatisinstanceid; done']; c['resources']['requests']['cpu']='500m'; c['resources']['limits']['cpu']='1'
+c=copy.deepcopy(sts['spec']['template']['spec']['initContainers'][0]); c['name']='verify-clusterid'; c['command']=['sh','-c']; c['args']=['set -e; bin/apply-config-from-env.py conf/bookkeeper.conf; export BOOKIE_MEM="-Xmx128M"; for i in 1 2 3; do time timeout 15 bin/bookkeeper shell whatisinstanceid; done']; c['resources']['requests']['cpu']='500m'
 name='sizing-init-'+str(int(time.time()))
 job={'apiVersion':'batch/v1','kind':'Job','metadata':{'name':name},'spec':{'backoffLimit':0,'activeDeadlineSeconds':240,'ttlSecondsAfterFinished':3600,'template':{'metadata':{'labels':{'app':'pulsar','release':'pulsar','component':'sizing-check'}},'spec':{'restartPolicy':'Never','serviceAccountName':'pulsar-bookie','securityContext':sts['spec']['template']['spec']['securityContext'],'containers':[c]}}}}
 run(['create','-f','-'],job); print(label,name,flush=True)

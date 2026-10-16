@@ -409,9 +409,6 @@
                 "resources": {
                   "requests": {
                     "cpu": "500m"
-                  },
-                  "limits": {
-                    "cpu": "1"
                   }
                 }
               }
@@ -437,9 +434,6 @@
                 "resources": {
                   "requests": {
                     "cpu": "500m"
-                  },
-                  "limits": {
-                    "cpu": "1"
                   }
                 }
               },
@@ -448,9 +442,6 @@
                 "resources": {
                   "requests": {
                     "cpu": "500m"
-                  },
-                  "limits": {
-                    "cpu": "1"
                   }
                 }
               }
@@ -476,9 +467,6 @@
                 "resources": {
                   "requests": {
                     "cpu": "500m"
-                  },
-                  "limits": {
-                    "cpu": "1"
                   }
                 }
               }
