@@ -740,5 +740,36 @@
         }
       }
     }
+  },
+  {
+    "environment": "dev",
+    "context": "gke_apc-sandbox_europe-west3_prototype",
+    "kind": "CronJob",
+    "namespace": "staging",
+    "name": "vehicle-anonymization-profiler",
+    "patch": {
+      "spec": {
+        "jobTemplate": {
+          "spec": {
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "name": "vehicle-anonymization-profiler",
+                    "resources": {
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "note": "Legacy staging profiler hosted in dev cluster; unchanged schedule and image."
   }
 ]

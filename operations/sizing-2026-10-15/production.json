@@ -1,0 +1,479 @@
+[
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "cert-manager",
+    "name": "cert-manager",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "cert-manager-controller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "cert-manager",
+    "name": "cert-manager-cainjector",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "cert-manager-cainjector",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "cert-manager",
+    "name": "cert-manager-webhook",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "cert-manager-webhook",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "anonymizer",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "anonymizer",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "gtfsrt-vp-poller-fi-jyvaskyla",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "gtfsrt-vp-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "gtfsrt-vp-poller-fi-kuopio",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "gtfsrt-vp-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "gtfsrt-vp-poller-fi-lahti",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "gtfsrt-vp-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "journey-matcher",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "journey-matcher",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "mqtt-deduplicator",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "mqtt-deduplicator",
+                "resources": {
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "pulsar-mqtt-forwarder-raportointi",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "pulsar-mqtt-forwarder",
+                "resources": {
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "pulsar-mqtt-forwarder-rtpi",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "pulsar-mqtt-forwarder",
+                "resources": {
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "vehicle-registry-poller-fi-jyvaskyla",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "vehicle-registry-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "vehicle-registry-poller-fi-kuopio",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "vehicle-registry-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "Deployment",
+    "namespace": "prod",
+    "name": "vehicle-registry-poller-fi-lahti",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "vehicle-registry-poller",
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "CronJob",
+    "namespace": "prod",
+    "name": "vehicle-anonymization-profiler",
+    "patch": {
+      "spec": {
+        "jobTemplate": {
+          "spec": {
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "name": "vehicle-anonymization-profiler",
+                    "resources": {
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-bookie",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "pulsar-bookkeeper-verify-clusterid",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-broker",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "wait-zookeeper-ready",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  }
+                }
+              },
+              {
+                "name": "wait-bookkeeper-ready",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "environment": "prod",
+    "context": "gke_apc-prod-397611_europe-west3_prod",
+    "kind": "StatefulSet",
+    "namespace": "pulsar",
+    "name": "pulsar-recovery",
+    "patch": {
+      "spec": {
+        "template": {
+          "spec": {
+            "initContainers": [
+              {
+                "name": "pulsar-bookkeeper-verify-clusterid",
+                "resources": {
+                  "requests": {
+                    "cpu": "500m"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+]
