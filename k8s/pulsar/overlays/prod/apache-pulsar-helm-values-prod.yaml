@@ -25,11 +25,3 @@ bookkeeper:
   volumes:
     ledgers:
       size: 100Gi
-
-
-# Approved for supervised production rollout on 16 October after restart review.
-initContainer:
-  resources:
-    requests:
-      cpu: 0.5
-      memory: 256Mi
