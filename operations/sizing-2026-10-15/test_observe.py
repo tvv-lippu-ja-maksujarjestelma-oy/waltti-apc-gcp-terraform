@@ -28,4 +28,22 @@ class PromotionTest(unittest.TestCase):
   r=rollback_patch(p,b)['spec']['template']['spec']['initContainers'][0]['resources']
   self.assertEqual(r,{'requests':{'cpu':'1'},'limits':{'cpu':None}})
 
+
+class SupervisedApprovalTest(unittest.TestCase):
+ def plan(self):
+  import pathlib
+  return (pathlib.Path(__file__).parent/'production.json').read_bytes()
+ def test_approved_scope(self):
+  import hashlib
+  from promote import validate_supervised_approval
+  payload=self.plan();validate_supervised_approval({'approved_plan_sha256':hashlib.sha256(payload).hexdigest()},payload)
+ def test_changed_scope_blocks(self):
+  from promote import validate_supervised_approval
+  with self.assertRaises(RuntimeError):validate_supervised_approval({'approved_plan_sha256':'old'},self.plan())
+ def test_splitter_cannot_be_added_to_supervised_scope(self):
+  import hashlib,json
+  from promote import validate_supervised_approval
+  plan=json.loads(self.plan());plan[0]['name']='vehicle-position-splitter-fi-kuopio';payload=json.dumps(plan).encode()
+  with self.assertRaises(RuntimeError):validate_supervised_approval({'approved_plan_sha256':hashlib.sha256(payload).hexdigest()},payload)
+
 if __name__=='__main__':unittest.main()

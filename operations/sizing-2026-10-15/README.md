@@ -43,3 +43,21 @@ records that exact exception; every new under-replicated ledger blocks promotion
 Staging and production have no allowed under-replication exceptions. Every sample
 also requires four writable bookies, an elected auditor and enabled replication.
 No ledger or persistent data is deleted by this campaign.
+
+
+## Approved supervised rollout on 16 October
+
+The initial overnight observation did not pass: coverage gaps, node maintenance,
+planned dev image updates and pre-existing crashes are retained in the evidence.
+After reviewing those findings the user explicitly approved today's supervised
+production rollout, excluding all three vehicle-position splitters. Their existing
+250m/512Mi requests and images stay unchanged.
+
+`--supervised-approved` requires the approval record to match the exact 18-target
+patch bundle hash. It bypasses only the failed 24-hour time/coverage gate; current
+health, PR heads/checks, reviewed main heads and production images remain guarded.
+The old automatic-promotion launch agent is unloaded before this mode runs.
+Pulsar rolls one ordinal at a time using a temporary StatefulSet partition,
+checking writable bookies, replication and message flow before moving on. The
+original update strategy is restored afterwards. Image digests are verified, and
+15 minutes of health observation precedes restoration of automatic Argo sync.

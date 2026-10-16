@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """One-time production promotion of frozen, reviewed resource patches after observation."""
-import argparse,copy,datetime,json,pathlib,subprocess,time
+import argparse,copy,datetime,hashlib,json,pathlib,subprocess,time
 import observe
 ROOT=pathlib.Path(__file__).resolve().parent
 
@@ -62,14 +62,65 @@ def rollback_patch(p,before):
     for resource in values:values[resource]=previous.get(bucket,{}).get(resource)
  return patch
 
+def validate_supervised_approval(approval,plan_bytes):
+ if approval.get('approved_plan_sha256')!=hashlib.sha256(plan_bytes).hexdigest():raise RuntimeError('Approved sizing scope changed')
+ plan=json.loads(plan_bytes)
+ if len(plan)!=18 or any(p['context']!=observe.CONTEXTS['prod'] or p['name'].startswith('vehicle-position-splitter-') for p in plan):raise RuntimeError('Supervised scope must exclude all splitters and target only production')
+
+def pod_images(plan):
+ pods=observe.kubectl('prod',['get','pods','-A','-o','json'])['items'];out={}
+ for p in plan:
+  key=p['namespace']+'/'+p['name'];out[key]={}
+  for pod in pods:
+   if pod['metadata']['namespace']!=p['namespace'] or not pod['metadata']['name'].startswith(p['name']+'-'):continue
+   for c in pod.get('status',{}).get('containerStatuses',[]):
+    if c.get('imageID'):out[key].setdefault(c['name'],set()).add(c['imageID'].split('@')[-1])
+ return out
+
+def verify_images(plan,expected):
+ actual=pod_images(plan)
+ for key,containers in expected.items():
+  for name,digests in containers.items():
+   if actual.get(key,{}).get(name,set())-digests:raise RuntimeError('Running image digest changed: '+key+'/'+name)
+
+def await_healthy(baseline,started,timeout=300):
+ deadline=time.monotonic()+timeout
+ while True:
+  health=observe.collect_environment('prod')
+  checks=observe.assess({'errors':health['errors'],'environments':{'prod':health}},{'environments':{'prod':baseline}},started)
+  if not checks:
+   with (ROOT/'production-health.jsonl').open('a') as f:f.write(json.dumps({'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'health':health})+'\n')
+   return health
+  hard=[x for x in checks if 'restart/OOM' in x or 'image changed' in x or 'failed job' in x]
+  if hard or time.monotonic()>=deadline:raise RuntimeError(str(checks))
+  print('Waiting for production to settle:',str(checks)[:500],flush=True);time.sleep(15)
+
+def roll_statefulset(p,before,baseline,started,expected_images):
+ replicas=before['spec'].get('replicas',1)
+ def partition(n):
+  run(command(p,['patch','statefulset',p['name'],'--type=merge','-p',json.dumps({'spec':{'updateStrategy':{'type':'RollingUpdate','rollingUpdate':{'partition':n}}}})]))
+ partition(replicas)
+ run(command(p,['patch','statefulset',p['name'],'--type=strategic','-p',json.dumps(p['patch'])]))
+ for ordinal in reversed(range(replicas)):
+  print('ROLLING PULSAR POD',p['name']+'-'+str(ordinal),flush=True);partition(ordinal)
+  print(run(command(p,['rollout','status','statefulset/'+p['name'],'--timeout=900s']),timeout=940).strip(),flush=True)
+  await_healthy(baseline,started,timeout=300)
+  verify_images([p],{p['namespace']+'/'+p['name']:expected_images})
+ run(command(p,['patch','statefulset',p['name'],'--type=json','-p',json.dumps([{'op':'replace','path':'/spec/updateStrategy','value':before['spec']['updateStrategy']}])]))
+
+
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--preflight-only',action='store_true');args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--preflight-only',action='store_true');parser.add_argument('--supervised-approved',action='store_true');args=parser.parse_args()
  config=json.loads((ROOT/'promotion-config.json').read_text());plan=json.loads((ROOT/'production.json').read_text())
- if not args.preflight_only:
+ if args.supervised_approved:
+  approval=json.loads((ROOT/'supervised-production-approval.json').read_text())
+  validate_supervised_approval(approval,(ROOT/'production.json').read_bytes())
+ elif not args.preflight_only:
   baseline=json.loads((ROOT/'observation-baseline.json').read_text());samples=[json.loads(x) for x in (ROOT/'samples.jsonl').read_text().splitlines()]
   eligible,reason=observe.gate(samples,baseline['time'],time.time())
   if not eligible:raise RuntimeError(reason)
   if (ROOT/'production-result.json').exists():return
+ if not args.preflight_only and ((ROOT/'production-result.json').exists() or (ROOT/'production-attempt.json').exists()):raise RuntimeError('Prior production attempt exists; inspect it before continuing')
  before,apps,baseline,errors=preflight(config,plan)
  report={'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'errors':errors,'targets':len(plan)}
  (ROOT/'production-preflight.json').write_text(json.dumps(report,indent=2));print(json.dumps(report),flush=True)
@@ -77,6 +128,8 @@ def main():
  if errors:
   (ROOT/'production-result.json').write_text(json.dumps({'status':'BLOCKED','reason':errors,'at':report['at']},indent=2));return
  (ROOT/'production-attempt.json').write_text(json.dumps({'started':time.time()}))
+ (ROOT/'production-baseline.json').write_text(json.dumps({'objects':before,'applications':apps,'health':baseline},indent=2))
+ expected_images=pod_images(plan)
  changed=[];paused=[];root_app=None;started=time.time()
  try:
   run(['python3',str(ROOT/'pulsar_init_smoke.py'),observe.CONTEXTS['prod'],'prod-before'],timeout=400)
@@ -93,13 +146,24 @@ def main():
   for p in plan:
    key=p['namespace']+'/'+p['name'];changed.append(p)
    print('PRODUCTION RESIZE',key,flush=True)
-   run(command(p,['patch',p['kind'],p['name'],'--type=strategic','-p',json.dumps(p['patch'])]))
-   if p['kind']!='CronJob':run(command(p,['rollout','status',p['kind']+'/'+p['name'],'--timeout=900s']),timeout=940)
+   if p['kind']=='StatefulSet':
+    roll_statefulset(p,before[key],baseline,started,expected_images[key])
+   else:
+    run(command(p,['patch',p['kind'],p['name'],'--type=strategic','-p',json.dumps(p['patch'])]))
+    if p['kind']!='CronJob':print(run(command(p,['rollout','status',p['kind']+'/'+p['name'],'--timeout=900s']),timeout=940).strip(),flush=True)
    after=json.loads(run(command(p,['get',p['kind'],p['name'],'-o','json'])))
    if fingerprints(after)!=fingerprints(before[key]):raise RuntimeError('Unexpected non-resource change: '+key)
-   health=observe.collect_environment('prod');checks=observe.assess({'errors':health['errors'],'environments':{'prod':health}},{'environments':{'prod':baseline}},started)
-   if checks:raise RuntimeError(str(checks))
+   await_healthy(baseline,started,timeout=300)
+   verify_images(plan,expected_images)
+   (ROOT/'production-progress.json').write_text(json.dumps({'last_verified':key,'completed':len(changed),'total':len(plan),'at':datetime.datetime.now(datetime.timezone.utc).isoformat()},indent=2))
   run(['python3',str(ROOT/'certificate_smoke.py'),'prod-after',observe.CONTEXTS['prod'],'prod'],timeout=300)
+  # Keep automatic reconciliation paused while node consolidation settles.
+  for minute in range(15):
+   await_healthy(baseline,started,timeout=300)
+   verify_images(plan,expected_images)
+   print('PRODUCTION OBSERVATION',minute+1,'/15 healthy',flush=True)
+   time.sleep(60)
+  await_healthy(baseline,started,timeout=300)
   for app in paused:
    current_app=observe.kubectl('dev',['-n','argocd','get','applications.argoproj.io',app['metadata']['name'],'-o','json'])
    if current_app['spec']['source']!=app['spec']['source']:raise RuntimeError('Application source changed during sizing: '+app['metadata']['name'])
@@ -112,6 +176,7 @@ def main():
   for p in reversed(changed):
    try:
     run(command(p,['patch',p['kind'],p['name'],'--type=strategic','-p',json.dumps(rollback_patch(p,before[p['namespace']+'/'+p['name']]))]))
+    if p['kind']=='StatefulSet':run(command(p,['patch',p['kind'],p['name'],'--type=json','-p',json.dumps([{'op':'replace','path':'/spec/updateStrategy','value':before[p['namespace']+'/'+p['name']]['spec']['updateStrategy']}])]))
     if p['kind']!='CronJob':run(command(p,['rollout','status',p['kind']+'/'+p['name'],'--timeout=900s']),timeout=940)
    except Exception as rollback_error:failures.append(str(rollback_error))
   result={'status':'FAILED','error':str(exc),'rollback_errors':failures,'argo_apps_left_without_automated_sync':[a['metadata']['name'] for a in paused]+(['argocd-settings'] if root_app else []),'reason':'Resource requests rolled back; reconcile merged source before restoring automated sync.'}

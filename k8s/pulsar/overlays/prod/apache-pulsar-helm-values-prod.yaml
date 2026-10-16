@@ -27,7 +27,7 @@ bookkeeper:
       size: 100Gi
 
 
-# Promote only after the dev/staging 24-hour observation passes.
+# Approved for supervised production rollout on 16 October after restart review.
 initContainer:
   resources:
     requests:
