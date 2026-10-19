@@ -5,9 +5,9 @@
 #    kustomization.yaml in waltti-apc-deployment via a pull request opened by the GitHub
 #    App waltti-image-updater (credentials: secret argocd/github-app-image-updater).
 #    Annotations cannot express pull requests, so these rules are CR-based.
-#  - everything else (qa, prod): legacy annotation mode (argocd-image-updater.argoproj.io/*
-#    in ../argocd-settings), digest written into the live Application (write-back-method: argocd)
-#    until step 6 of the GitOps plan moves them to reviewed promotion PRs.
+#  - qa and prod: not managed by Image Updater. Their digests live in waltti-apc-deployment
+#    and change only through promotion pull requests (scripts/promote-image.sh there).
+#    The "*" rule below keeps annotation mode available but no Application uses it.
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
