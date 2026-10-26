@@ -11,11 +11,6 @@ spec:
   source:
     repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
     path: manifests/anonymizer/overlays/prod
-    # Freeze the running image while resource sizing is observed/promoted.
-    # Restore automated image updates as a separate, reviewed deployment.
-    kustomize:
-      images:
-        - tvvlmj/waltti-apc-anonymizer@sha256:ee345393195ddc2d23164be41971d93a7fe8d1c16bb6afcec50ffa6f02b59d8a
   destination:
     server: https://34.185.149.50
   syncPolicy:  
