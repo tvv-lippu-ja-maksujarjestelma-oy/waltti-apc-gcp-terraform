@@ -147,6 +147,19 @@ spec:
           writeBackTarget: kustomization
           pullRequest:
             github: {}
+    - namePattern: vehicle-position-splitter-jyvaskyla-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: waltti-apc-vehicle-position-splitter
+          imageName: tvvlmj/waltti-apc-vehicle-position-splitter:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
     - namePattern: vehicle-position-splitter-kuopio-dev
       useAnnotations: false
       commonUpdateSettings:
@@ -167,6 +180,19 @@ spec:
       images:
         - alias: waltti-apc-vehicle-position-splitter
           imageName: tvvlmj/waltti-apc-vehicle-position-splitter:edge
+      writeBackConfig:
+        method: git:secret:argocd/github-app-image-updater
+        gitConfig:
+          writeBackTarget: kustomization
+          pullRequest:
+            github: {}
+    - namePattern: vehicle-registry-poller-fi-jyvaskyla-dev
+      useAnnotations: false
+      commonUpdateSettings:
+        updateStrategy: digest
+      images:
+        - alias: http-pulsar-poller
+          imageName: tvvlmj/http-pulsar-poller:edge
       writeBackConfig:
         method: git:secret:argocd/github-app-image-updater
         gitConfig:
