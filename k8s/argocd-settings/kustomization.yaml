@@ -38,6 +38,7 @@ resources:
   - app-vehicle-anonymization-profiler-qa.yaml
   - app-vehicle-position-splitter-jyvaskyla-prod.yaml
   - app-vehicle-position-splitter-jyvaskyla-qa.yaml
+  - app-vehicle-position-splitter-jyvaskyla-dev.yaml
   - app-vehicle-position-splitter-kuopio-dev.yaml
   - app-vehicle-position-splitter-kuopio-prod.yaml
   - app-vehicle-position-splitter-kuopio-qa.yaml
@@ -45,6 +46,7 @@ resources:
   - app-vehicle-position-splitter-lahti-prod.yaml
   - app-vehicle-position-splitter-lahti-qa.yaml
   - app-vehicle-registry-poller-fi-jyvaskyla-prod.yaml
+  - app-vehicle-registry-poller-fi-jyvaskyla-dev.yaml
   - app-vehicle-registry-poller-fi-kuopio-dev.yaml
   - app-vehicle-registry-poller-fi-kuopio-prod.yaml
   - app-vehicle-registry-poller-fi-kuopio-qa.yaml
