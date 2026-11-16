@@ -23,6 +23,8 @@ bookkeeper:
       size: 100Gi
   resources:
     requests:
+      # Peak use about 0.05-0.08 vCPU per bookie (2-15 Nov 2026); CPU bursting covers spikes.
+      cpu: 0.25
       # Measured peak about 1.6 GiB per bookie (2-15 Nov 2026); chart default 512Mi was below use.
       memory: 2Gi
 
@@ -39,3 +41,15 @@ initContainer:
       memory: 256Mi
     limits:
       cpu: 1
+
+# CPU requests reduced from 0.5 (Nov 2026 cost review). Peak use per pod 2-15 Nov 2026:
+# ZooKeeper about 0.01-0.08 vCPU, auto-recovery about 0.06 vCPU with short spikes covered by CPU bursting.
+# 0.25 is accepted by Autopilot for anti-affinity pods (the brokers already run at 0.25).
+zookeeper:
+  resources:
+    requests:
+      cpu: 0.25
+autorecovery:
+  resources:
+    requests:
+      cpu: 0.25
