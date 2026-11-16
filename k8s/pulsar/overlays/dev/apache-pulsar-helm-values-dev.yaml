@@ -21,6 +21,10 @@ bookkeeper:
   volumes:
     ledgers:
       size: 100Gi
+  resources:
+    requests:
+      # Measured peak about 1.6 GiB per bookie (2-15 Nov 2026); chart default 512Mi was below use.
+      memory: 2Gi
 
 # In case you have to debug, you can enable toolset:
 # components:
