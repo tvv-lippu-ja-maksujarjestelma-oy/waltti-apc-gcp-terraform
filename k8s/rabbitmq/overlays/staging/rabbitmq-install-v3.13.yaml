@@ -159,8 +159,8 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            # Measured peak about 0.3 vCPU and 0.2 GiB (2-15 Nov 2026).
-            cpu: 250m
+            # Measured peak about 0.28 vCPU and 0.19 GiB in staging (2-15 Nov 2026).
+            cpu: 300m
             memory: 256Mi
         env:
         - name: JAVA_OPTS
