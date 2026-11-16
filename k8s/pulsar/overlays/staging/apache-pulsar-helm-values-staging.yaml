@@ -19,6 +19,10 @@ bookkeeper:
   volumes:
     ledgers:
       size: 100Gi
+  resources:
+    requests:
+      # Measured peak about 1.05 GiB per bookie (2-15 Nov 2026); chart default 512Mi was below use.
+      memory: 1280Mi
 
 # Init requests affect the bill for the entire pod lifetime. Keep startup burst
 # capacity; the 15-second BookKeeper check is tested before each rollout.
