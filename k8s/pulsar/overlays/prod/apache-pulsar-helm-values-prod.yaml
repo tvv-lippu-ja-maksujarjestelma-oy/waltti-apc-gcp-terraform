@@ -29,3 +29,14 @@ bookkeeper:
     requests:
       # Measured peak about 0.78 GiB per bookie (2-15 Nov 2026); chart default 512Mi was below use.
       memory: 1Gi
+
+# Init containers (verify-clusterid, wait-*-ready) count for the whole pod lifetime:
+# Autopilot bills the larger of the init and main container requests. The base value
+# of 1.0 CPU made each bookie, broker and auto-recovery pod cost 1 vCPU. Staging and
+# dev run 0.5. Production startup passed at 0.5 with uncapped bursting (4.7-5.1 s,
+# 16 Oct 2026); a 1-CPU cap timed out, so no CPU limit is set here.
+initContainer:
+  resources:
+    requests:
+      cpu: 0.5
+      memory: 256Mi
