@@ -30,6 +30,23 @@ bookkeeper:
 # components:
 #   toolset: true
 
+
+# Test environments only: ZooKeeper may share nodes (Nov 2026 cost review).
+# Autopilot requires 0.5 vCPU for each pod with pod anti-affinity. Peak use per
+# ZooKeeper pod was 0.01-0.08 vCPU (2-15 Nov 2026).
+# The dev cluster has no CPU bursting, so ZooKeeper is capped at 0.25 vCPU,
+# still 3x its peak.
+# All three pods may run on one node, so a node loss or a GKE upgrade drain
+# can stop the whole test ZooKeeper quorum and with it Pulsar. Prod keeps
+# anti-affinity. Bookies, auto-recovery and brokers keep it too: their 0.5 vCPU
+# init containers set their bill, so dropping it there would save nothing.
+zookeeper:
+  affinity:
+    anti_affinity: false
+  resources:
+    requests:
+      cpu: 0.25
+
 # Init requests affect the bill for the entire pod lifetime. Keep startup burst
 # capacity; the 15-second BookKeeper check is tested before each rollout.
 initContainer:
