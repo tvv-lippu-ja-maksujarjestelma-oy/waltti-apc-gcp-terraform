@@ -22,6 +22,17 @@ environments as the base values aim to have the production configuration.
   - Strip extra components
   - Ensure resource requests conform to GKE Autopilot
   - Boost init container resources
+  - CVE-2026-114938: add `-XX:-UseBASE64Intrinsics` to `PULSAR_MEM`
+    (ZooKeeper, BookKeeper, broker) and `BOOKIE_MEM` (auto-recovery), on top of
+    the chart or existing memory values
+    - Keep the flag until the live image contains a fixed JVM (vulnerable:
+      Pulsar 4.0.6 image with Corretto 21.0.8)
+    - The chart does not restart pods on a ConfigMap change
+      (`restartPodsOnConfigMapChange: false`). After apply, restart the
+      zookeeper, bookie, recovery and broker StatefulSets one at a time, and
+      check the flag in the running JVM (`jcmd 1 VM.flags | grep BASE64`)
+    - Chart init containers and initialize jobs export their own
+      `PULSAR_MEM`/`BOOKIE_MEM`, so their short-lived JVMs do not get the flag
 - Development (`./overlays/dev/apache-pulsar-helm-values-dev.yaml`)
   - Disables persistence, at least during infra development
     - This way PVCs do not have to be managed
