@@ -50,6 +50,11 @@ autorecovery:
   resources:
     requests:
       cpu: 0.5 # Default: 0.05
+  # CVE-2026-114938: -XX:-UseBASE64Intrinsics disables the vulnerable JVM
+  # Base64 intrinsic. Keep it until the live image contains a fixed JVM.
+  configData:
+    BOOKIE_MEM: > # Chart default plus the CVE flag
+      -Xms64m -Xmx64m -XX:-UseBASE64Intrinsics
 bookkeeper:
   podMonitor:
     enabled: false
@@ -66,6 +71,11 @@ bookkeeper:
   resources:
     requests:
       cpu: 0.5 # Default: 0.2
+  # CVE-2026-114938: -XX:-UseBASE64Intrinsics disables the vulnerable JVM
+  # Base64 intrinsic. Keep it until the live image contains a fixed JVM.
+  configData:
+    PULSAR_MEM: > # Chart default plus the CVE flag
+      -Xms128m -Xmx256m -XX:MaxDirectMemorySize=256m -XX:-UseBASE64Intrinsics
 # Oxia server requests are high enough by default (1/1Gi), coordinator is not anti-affinity.
 oxia:
   server:
@@ -107,8 +117,10 @@ broker:
     # Reduce JVM heap+direct to fit within 768Mi limit with headroom for JVM overhead.
     # Default is -Xms128m -Xmx256m -XX:MaxDirectMemorySize=256m (fits in 512Mi but
     # OOMKills under load due to JVM overhead on top of heap+direct).
+    # CVE-2026-114938: -XX:-UseBASE64Intrinsics disables the vulnerable JVM
+    # Base64 intrinsic. Keep it until the live image contains a fixed JVM.
     PULSAR_MEM: >
-      -Xms128m -Xmx256m -XX:MaxDirectMemorySize=128m
+      -Xms128m -Xmx256m -XX:MaxDirectMemorySize=128m -XX:-UseBASE64Intrinsics
 proxy:
   podMonitor:
     enabled: false
@@ -137,6 +149,11 @@ zookeeper:
   resources:
     requests:
       cpu: 0.5 # Default: 0.1
+  # CVE-2026-114938: -XX:-UseBASE64Intrinsics disables the vulnerable JVM
+  # Base64 intrinsic. Keep it until the live image contains a fixed JVM.
+  configData:
+    PULSAR_MEM: > # Chart default plus the CVE flag
+      -Xms64m -Xmx128m -XX:-UseBASE64Intrinsics
 
 # Cluster initialization fails with default settings because the unconfigurable
 # timeout command introduced in

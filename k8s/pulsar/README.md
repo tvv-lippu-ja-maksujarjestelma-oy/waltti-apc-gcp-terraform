@@ -22,6 +22,10 @@ environments as the base values aim to have the production configuration.
   - Strip extra components
   - Ensure resource requests conform to GKE Autopilot
   - Boost init container resources
+  - CVE-2026-114938: add `-XX:-UseBASE64Intrinsics` to `PULSAR_MEM`
+    (ZooKeeper, BookKeeper, broker) and `BOOKIE_MEM` (auto-recovery), on top of
+    the chart or existing memory values
+    - Keep the flag until the live image contains a fixed JVM
 - Development (`./overlays/dev/apache-pulsar-helm-values-dev.yaml`)
   - Disables persistence, at least during infra development
     - This way PVCs do not have to be managed
