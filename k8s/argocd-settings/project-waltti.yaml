@@ -32,4 +32,8 @@ spec:
   namespaceResourceWhitelist:
   - group: '*'
     kind: '*'
+  # Show an OrphanedResourceWarning on Applications whose destination namespace
+  # holds objects that no Application tracks. Argo CD only warns; it never deletes them.
+  orphanedResources:
+    warn: true
 status: {}
