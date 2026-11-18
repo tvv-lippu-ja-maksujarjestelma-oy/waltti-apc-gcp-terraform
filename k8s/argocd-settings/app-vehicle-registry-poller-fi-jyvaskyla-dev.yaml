@@ -13,6 +13,7 @@ spec:
     path: manifests/vehicle-registry-poller/jyvaskyla/overlays/dev
   destination:
     server: https://kubernetes.default.svc
+    namespace: dev
   syncPolicy:
     automated:
       prune: true

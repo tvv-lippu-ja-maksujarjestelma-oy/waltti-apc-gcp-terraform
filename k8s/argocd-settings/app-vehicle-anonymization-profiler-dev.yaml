@@ -17,6 +17,7 @@ spec:
     path: manifests/vehicle-anonymization-profiler/overlays/dev
   destination:
     server: https://kubernetes.default.svc
+    namespace: dev
   syncPolicy:  
     automated: 
       prune: true
