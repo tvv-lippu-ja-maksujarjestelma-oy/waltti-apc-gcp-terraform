@@ -13,6 +13,7 @@ spec:
     path: manifests/pulsar-mqtt-forwarder/raportointi/overlays/prod
   destination:
     server: https://34.185.149.50
+    namespace: prod
   syncPolicy:  
     automated: 
       prune: true

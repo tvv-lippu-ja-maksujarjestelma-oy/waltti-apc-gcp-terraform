@@ -13,5 +13,6 @@ spec:
     path: manifests/common-settings/overlays/staging
   destination:
     server: https://34.159.35.141
+    namespace: staging
   syncPolicy: 
     automated: {}

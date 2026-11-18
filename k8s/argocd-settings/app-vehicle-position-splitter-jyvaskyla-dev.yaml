@@ -13,6 +13,7 @@ spec:
     path: manifests/vehicle-position-splitter/jyvaskyla/overlays/dev
   destination:
     server: https://kubernetes.default.svc
+    namespace: dev
   syncPolicy:
     automated:
       prune: true

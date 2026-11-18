@@ -17,6 +17,7 @@ spec:
     path: manifests/gtfsrt-vp-poller/kuopio/overlays/dev
   destination:
     server: https://kubernetes.default.svc
+    namespace: dev
   syncPolicy:  
     automated: 
       prune: true
