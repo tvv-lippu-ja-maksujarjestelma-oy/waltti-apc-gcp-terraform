@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mqtt-mqtt-duplicator-prod-to-staging-dev
+  namespace: argocd
+  labels:
+    environment: dev
+    name: mqtt-mqtt-duplicator-prod-to-staging
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/mqtt-mqtt-duplicator/overlays/prod-to-staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
