@@ -27,6 +27,8 @@ resources:
   - app-mqtt-forwarder-dev.yaml
   - app-mqtt-forwarder-prod.yaml
   - app-mqtt-forwarder-qa.yaml
+  - app-mqtt-mqtt-duplicator-prod-to-dev-dev.yaml
+  - app-mqtt-mqtt-duplicator-prod-to-staging-dev.yaml
   - app-pulsar-mqtt-forwarder-raportointi-dev.yaml
   - app-pulsar-mqtt-forwarder-raportointi-prod.yaml
   - app-pulsar-mqtt-forwarder-raportointi-qa.yaml
@@ -47,6 +49,7 @@ resources:
   - app-vehicle-position-splitter-lahti-qa.yaml
   - app-vehicle-registry-poller-fi-jyvaskyla-prod.yaml
   - app-vehicle-registry-poller-fi-jyvaskyla-dev.yaml
+  - app-vehicle-registry-poller-fi-jyvaskyla-qa.yaml
   - app-vehicle-registry-poller-fi-kuopio-dev.yaml
   - app-vehicle-registry-poller-fi-kuopio-prod.yaml
   - app-vehicle-registry-poller-fi-kuopio-qa.yaml

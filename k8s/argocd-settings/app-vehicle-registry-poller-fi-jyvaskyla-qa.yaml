@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vehicle-registry-poller-fi-jyvaskyla-qa
+  namespace: argocd
+  labels:
+    environment: staging
+    name: vehicle-registry-poller-fi-jyvaskyla
+spec:
+  project: waltti
+  source:
+    repoURL: https://github.com/tvv-lippu-ja-maksujarjestelma-oy/waltti-apc-deployment.git
+    path: manifests/vehicle-registry-poller/jyvaskyla/overlays/staging
+  destination:
+    server: https://34.159.35.141
+    namespace: staging
+  syncPolicy:  
+    automated: 
+      prune: true
+      selfHeal: true
+      
