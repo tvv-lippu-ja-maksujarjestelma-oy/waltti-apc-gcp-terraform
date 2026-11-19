@@ -29,8 +29,8 @@ bookkeeper:
     requests:
       # Measured peak about 0.78 GiB per bookie (2-15 Nov 2026), then 1.12 GiB on bookie-2
       # (17-19 Nov 2026, non-evictable; mostly native memory outside -Xmx and direct memory).
-      # Same value as staging.
-      memory: 1280Mi
+      # 1.5Gi leaves about 30% headroom above that peak.
+      memory: 1536Mi
 
 # Init containers (verify-clusterid, wait-*-ready) count for the whole pod lifetime:
 # Autopilot bills the larger of the init and main container requests. The base value
